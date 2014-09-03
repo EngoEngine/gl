@@ -394,6 +394,60 @@ func (c *Context) GetContextAttributes() ContextAttributes {
 	}
 }
 
+// PerFragment ---------------------------------------------------------------
+
+// The GL_BLEND_COLOR may be used to calculate the source and destination blending factors.
+func (c *Context) BlendColor(r, g, b, a float64) {
+	c.Call("blendColor", r, g, b, a)
+}
+
+// Sets the equation used to blend RGB and Alpha values of an incoming source
+// fragment with a destination values as stored in the fragment's frame buffer.
+func (c *Context) BlendEquation(mode int) {
+	c.Call("blendEquation", mode)
+}
+
+// Controls the blending of an incoming source fragment's R, G, B, and A values
+// with a destination R, G, B, and A values as stored in the fragment's WebGLFramebuffer.
+func (c *Context) BlendEquationSeparate(modeRGB, modeAlpha int) {
+	c.Call("blendEquationSeparate", modeRGB, modeAlpha)
+}
+
+// Sets the blending factors used to combine source and destination pixels.
+func (c *Context) BlendFunc(sfactor, dfactor int) {
+	c.Call("blendFunc", sfactor, dfactor)
+}
+
+// Sets the weighting factors that are used by blendEquationSeparate.
+func (c *Context) BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha int) {
+	c.Call("blendFuncSeparate", srcRGB, dstRGB, srcAlpha, dstAlpha)
+}
+
+// Sets a function to use to compare incoming pixel depth to the
+// current depth buffer value.
+func (c *Context) DepthFunc(fun int) {
+	c.Call("depthFunc", fun)
+}
+
+func (c *Context) SampleCoverage(value float64, invert bool) {
+	c.Call("sampleCoverage", value, invert)
+}
+
+func (c *Context) StencilFunc(function, ref, mask int) {
+	c.Call("stencilFunc", function, ref, mask)
+}
+
+func (c *Context) StencilFuncSeparate(face, function, ref, mask int) {
+	c.Call("stencilFuncSeparate", face, function, ref, mask)
+}
+
+// public function stencilOp(fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
+// public function stencilOpSeparate(face:GLenum, fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
+
+// FrameBuffer
+
+// ---------------------------------------------------------------------------
+
 // Specifies the active texture unit.
 func (c *Context) ActiveTexture(texture int) {
 	c.Call("activeTexture", texture)
@@ -427,33 +481,6 @@ func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
 // Binds a named texture object to a target.
 func (c *Context) BindTexture(target int, texture *Texture) {
 	c.Call("bindTexture", target, texture.Object)
-}
-
-// The GL_BLEND_COLOR may be used to calculate the source and destination blending factors.
-func (c *Context) BlendColor(r, g, b, a float64) {
-	c.Call("blendColor", r, g, b, a)
-}
-
-// Sets the equation used to blend RGB and Alpha values of an incoming source
-// fragment with a destination values as stored in the fragment's frame buffer.
-func (c *Context) BlendEquation(mode int) {
-	c.Call("blendEquation", mode)
-}
-
-// Controls the blending of an incoming source fragment's R, G, B, and A values
-// with a destination R, G, B, and A values as stored in the fragment's WebGLFramebuffer.
-func (c *Context) BlendEquationSeparate(modeRGB, modeAlpha int) {
-	c.Call("blendEquationSeparate", modeRGB, modeAlpha)
-}
-
-// Sets the blending factors used to combine source and destination pixels.
-func (c *Context) BlendFunc(sfactor, dfactor int) {
-	c.Call("blendFunc", sfactor, dfactor)
-}
-
-// Sets the weighting factors that are used by blendEquationSeparate.
-func (c *Context) BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha int) {
-	c.Call("blendFuncSeparate", srcRGB, dstRGB, srcAlpha, dstAlpha)
 }
 
 // Creates a buffer in memory and initializes it with array data.
@@ -584,12 +611,6 @@ func (c *Context) DeleteShader(shader *Shader) {
 // Deletes a specific texture object.
 func (c *Context) DeleteTexture(texture *Texture) {
 	c.Call("deleteTexture", texture.Object)
-}
-
-// Sets a function to use to compare incoming pixel depth to the
-// current depth buffer value.
-func (c *Context) DepthFunc(fun int) {
-	c.Call("depthFunc", fun)
 }
 
 // Sets whether or not you can write to the depth buffer.
@@ -886,10 +907,6 @@ func (c *Context) RenderbufferStorage(target, internalFormat, width, height int)
 	c.Call("renderbufferStorage", target, internalFormat, width, height)
 }
 
-//func (c *Context) SampleCoverage(value float64, invert bool) {
-//	c.Call("sampleCoverage", value, invert)
-//}
-
 // Sets the dimensions of the scissor box.
 func (c *Context) Scissor(x, y, width, height int) {
 	c.Call("scissor", x, y, width, height)
@@ -900,12 +917,8 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 	c.Call("shaderSource", shader.Object, source)
 }
 
-// public function stencilFunc(func:GLenum, ref:GLint, mask:GLuint) : Void;
-// public function stencilFuncSeparate(face:GLenum, func:GLenum, ref:GLint, mask:GLuint) : Void;
 // public function stencilMask(mask:GLuint) : Void;
 // public function stencilMaskSeparate(face:GLenum, mask:GLuint) : Void;
-// public function stencilOp(fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
-// public function stencilOpSeparate(face:GLenum, fail:GLenum, zfail:GLenum, zpass:GLenum) : Void;
 
 // Loads the supplied pixel data into a texture.
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
