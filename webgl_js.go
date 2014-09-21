@@ -460,7 +460,7 @@ func (c *Context) AttachShader(program *Program, shader *Shader) {
 
 // Binds a generic vertex index to a user-defined attribute variable.
 func (c *Context) BindAttribLocation(program *Program, index int, name string) {
-	c.Call("bindAttribLocation", program, index, name)
+	c.Call("bindAttribLocation", program.Object, index, name)
 }
 
 // Associates a buffer with a buffer target.
@@ -593,7 +593,7 @@ func (c *Context) DeleteFramebuffer(framebuffer *FrameBuffer) {
 // Any shader objects associated with the program will be detached.
 // They will be deleted if they were already flagged for deletion.
 func (c *Context) DeleteProgram(program *Program) {
-	c.Call("deleteProgram", program)
+	c.Call("deleteProgram", program.Object)
 }
 
 // Deletes the specified renderbuffer object. If the renderbuffer is
@@ -625,7 +625,7 @@ func (c *Context) DepthRange(zNear, zFar float64) {
 
 // Detach a shader object from a program object.
 func (c *Context) DetachShader(program *Program, shader *Shader) {
-	c.Call("detachShader", program, shader)
+	c.Call("detachShader", program.Object, shader.Object)
 }
 
 // Turns off specific WebGL capabilities for this context.
@@ -748,19 +748,19 @@ func (c *Context) GetFramebufferAttachmentParameter(target, attachment, pname in
 // Returns the value of the program parameter that corresponds to a supplied pname
 // which is interpreted as an int.
 func (c *Context) GetProgramParameteri(program *Program, pname int) int {
-	return c.Call("getProgramParameter", program, pname).Int()
+	return c.Call("getProgramParameter", program.Object, pname).Int()
 }
 
 // Returns the value of the program parameter that corresponds to a supplied pname
 // which is interpreted as a bool.
 func (c *Context) GetProgramParameterb(program *Program, pname int) bool {
-	return c.Call("getProgramParameter", program, pname).Bool()
+	return c.Call("getProgramParameter", program.Object, pname).Bool()
 }
 
 // Returns information about the last error that occurred during
 // the failed linking or validation of a WebGL program object.
 func (c *Context) GetProgramInfoLog(program *Program) string {
-	return c.Call("getProgramInfoLog", program).Str()
+	return c.Call("getProgramInfoLog", program.Object).Str()
 }
 
 // TODO: Create type specific variations.
@@ -809,7 +809,7 @@ func (c *Context) GetTexParameter(target, pname int) js.Object {
 // TODO: Create type specific variations.
 // Gets the uniform value for a specific location in a program.
 func (c *Context) GetUniform(program *Program, location *UniformLocation) js.Object {
-	return c.Call("getUniform", program, location)
+	return c.Call("getUniform", program.Object, location.Object)
 }
 
 // Returns a WebGLUniformLocation object for the location
@@ -849,7 +849,7 @@ func (c *Context) IsFramebuffer(framebuffer *FrameBuffer) bool {
 
 // Returns true if program object is valid, false otherwise.
 func (c *Context) IsProgram(program *Program) bool {
-	return c.Call("isProgram", program).Bool()
+	return c.Call("isProgram", program.Object).Bool()
 }
 
 // Returns true if buffer is valid, false otherwise.
@@ -993,19 +993,19 @@ func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
 // Sets values for a 2x2 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix2fv", location, transpose, value)
+	c.Call("uniformMatrix2fv", location.Object, transpose, value)
 }
 
 // Sets values for a 3x3 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix3fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix3fv", location, transpose, value)
+	c.Call("uniformMatrix3fv", location.Object, transpose, value)
 }
 
 // Sets values for a 4x4 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix4fv", location, transpose, value)
+	c.Call("uniformMatrix4fv", location.Object, transpose, value)
 }
 
 // Set the program object to use for rendering.
@@ -1015,7 +1015,7 @@ func (c *Context) UseProgram(program *Program) {
 
 // Returns whether a given program can run in the current WebGL state.
 func (c *Context) ValidateProgram(program *Program) {
-	c.Call("validateProgram", program)
+	c.Call("validateProgram", program.Object)
 }
 
 func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride int, offset int) {
