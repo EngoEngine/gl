@@ -680,6 +680,10 @@ func (c *Context) GetUniformLocation(program *Program, name string) *UniformLoca
 	return &UniformLocation{gl.GetUniformLocation(program.uint32, gl.Str(name+"\x00"))}
 }
 
+func (c *Context) GetError() int {
+	return int(gl.GetError())
+}
+
 func (c *Context) CreateBuffer() *Buffer {
 	var loc uint32
 	gl.GenBuffers(1, &loc)
@@ -715,12 +719,28 @@ func (c *Context) BlendFunc(src, dst int) {
 	gl.BlendFunc(uint32(src), uint32(dst))
 }
 
+func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
+	// TODO: count value of 1 is currently hardcoded.
+	//       Perhaps it should be len(value) / 16 or something else?
+	//       In OpenGL 2.1 it is a manually supplied parameter, but WebGL does not have it.
+	//       Not sure if WebGL automatically deduces it and supports count values greater than 1, or if 1 is always assumed.
+	gl.UniformMatrix4fv(location.int32, 1, transpose, &value[0])
+}
+
 func (c *Context) UseProgram(program *Program) {
 	if program == nil {
 		gl.UseProgram(0)
 		return
 	}
 	gl.UseProgram(program.uint32)
+}
+
+func (c *Context) ValidateProgram(program *Program) {
+	if program == nil {
+		gl.ValidateProgram(0)
+		return
+	}
+	gl.ValidateProgram(program.uint32)
 }
 
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
@@ -730,6 +750,10 @@ func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 	size := uintptr(reflect.ValueOf(data).Len()) * reflect.TypeOf(data).Elem().Size()
 	gl.BufferSubData(uint32(target), offset, int(size), gl.Ptr(data))
+}
+
+func (c *Context) DrawArrays(mode, first, count int) {
+	gl.DrawArrays(uint32(mode), int32(first), int32(count))
 }
 
 func (c *Context) DrawElements(mode, count, typ, offset int) {
