@@ -351,7 +351,7 @@ type Context struct {
 // If an error is returned it means you won't have access to WebGL
 // functionality.
 func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
-	if js.Global.Get("WebGLRenderingContext").IsUndefined() {
+	if js.Global.Get("WebGLRenderingContext") == js.Undefined {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
 	}
 
@@ -368,9 +368,9 @@ func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
 		"preserveDrawingBuffer": ca.PreserveDrawingBuffer,
 	}
 	gl := canvas.Call("getContext", "webgl", attrs)
-	if gl.IsNull() {
+	if gl == nil {
 		gl = canvas.Call("getContext", "experimental-webgl", attrs)
-		if gl.IsNull() {
+		if gl == nil {
 			return nil, errors.New("Creating a webgl context has failed.")
 		}
 	}
