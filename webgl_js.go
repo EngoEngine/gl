@@ -772,12 +772,12 @@ func (c *Context) GetRenderbufferParameter(target, pname int) int {
 // TODO: Create type specific variations.
 // Returns the value of the parameter associated with pname for a shader object.
 func (c *Context) GetShaderParameter(shader *Shader, pname int) js.Object {
-	return c.Call("getShaderParameter", shader, pname)
+	return c.Call("getShaderParameter", shader.Object, pname)
 }
 
 // Returns the value of the parameter associated with pname for a shader object.
 func (c *Context) GetShaderParameterb(shader *Shader, pname int) bool {
-	return c.Call("getShaderParameter", shader, pname).Bool()
+	return c.Call("getShaderParameter", shader.Object, pname).Bool()
 }
 
 // Returns errors which occur when compiling a shader.
@@ -844,7 +844,7 @@ func (c *Context) IsContextLost() bool {
 
 // Returns true if buffer is valid, false otherwise.
 func (c *Context) IsFramebuffer(framebuffer *FrameBuffer) bool {
-	return c.Call("isFramebuffer", framebuffer).Bool()
+	return c.Call("isFramebuffer", framebuffer.Object).Bool()
 }
 
 // Returns true if program object is valid, false otherwise.
@@ -854,17 +854,17 @@ func (c *Context) IsProgram(program *Program) bool {
 
 // Returns true if buffer is valid, false otherwise.
 func (c *Context) IsRenderbuffer(renderbuffer *RenderBuffer) bool {
-	return c.Call("isRenderbuffer", renderbuffer).Bool()
+	return c.Call("isRenderbuffer", renderbuffer.Object).Bool()
 }
 
 // Returns true if shader is valid, false otherwise.
 func (c *Context) IsShader(shader *Shader) bool {
-	return c.Call("isShader", shader).Bool()
+	return c.Call("isShader", shader.Object).Bool()
 }
 
 // Returns true if texture is valid, false otherwise.
 func (c *Context) IsTexture(texture *Texture) bool {
-	return c.Call("isTexture", texture).Bool()
+	return c.Call("isTexture", texture.Object).Bool()
 }
 
 // Returns whether or not a WebGL capability is enabled for this context.
