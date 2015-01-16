@@ -693,13 +693,13 @@ func (c *Context) GenerateMipmap(target int) {
 // Returns an WebGLActiveInfo object containing the size, type, and name
 // of a vertex attribute at a specific index position in a program object.
 func (c *Context) GetActiveAttrib(program *Program, index int) string {
-	return c.Call("getActiveAttrib", program.Object, index).Str()
+	return c.Call("getActiveAttrib", program.Object, index).String()
 }
 
 // Returns an WebGLActiveInfo object containing the size, type, and name
 // of a uniform attribute at a specific index position in a program object.
 func (c *Context) GetActiveUniform(program *Program, index int) string {
-	return c.Call("getActiveUniform", program.Object, index).Str()
+	return c.Call("getActiveUniform", program.Object, index).String()
 }
 
 // Returns a slice of WebGLShaders bound to a WebGLProgram.
@@ -760,7 +760,7 @@ func (c *Context) GetProgramParameterb(program *Program, pname int) bool {
 // Returns information about the last error that occurred during
 // the failed linking or validation of a WebGL program object.
 func (c *Context) GetProgramInfoLog(program *Program) string {
-	return c.Call("getProgramInfoLog", program.Object).Str()
+	return c.Call("getProgramInfoLog", program.Object).String()
 }
 
 // TODO: Create type specific variations.
@@ -782,12 +782,12 @@ func (c *Context) GetShaderParameterb(shader *Shader, pname int) bool {
 
 // Returns errors which occur when compiling a shader.
 func (c *Context) GetShaderInfoLog(shader *Shader) string {
-	return c.Call("getShaderInfoLog", shader.Object).Str()
+	return c.Call("getShaderInfoLog", shader.Object).String()
 }
 
 // Returns source code string associated with a shader object.
 func (c *Context) GetShaderSource(shader *Shader) string {
-	return c.Call("getShaderSource", shader.Object).Str()
+	return c.Call("getShaderSource", shader.Object).String()
 }
 
 // Returns a slice of supported extension strings.
@@ -795,7 +795,7 @@ func (c *Context) GetSupportedExtensions() []string {
 	ext := c.Call("getSupportedExtensions")
 	extensions := make([]string, ext.Length())
 	for i := 0; i < ext.Length(); i++ {
-		extensions[i] = ext.Index(i).Str()
+		extensions[i] = ext.Index(i).String()
 	}
 	return extensions
 }
