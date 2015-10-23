@@ -747,6 +747,10 @@ func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 	gl.Uniform2f(location.int32, x, y)
 }
 
+func (c *Context) Uniform3f(location *UniformLocation, x, y, z float32) {
+	gl.Uniform3f(location.int32, x, y, z)
+}
+
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 	size := uintptr(reflect.ValueOf(data).Len()) * reflect.TypeOf(data).Elem().Size()
 	gl.BufferSubData(uint32(target), offset, int(size), gl.Ptr(data))
@@ -770,4 +774,28 @@ func (c *Context) Viewport(x, y, width, height int) {
 
 func (c *Context) Clear(flags int) {
 	gl.Clear(uint32(flags))
+}
+
+func (c *Context) Translatef(x, y, z float32) {
+	gl.Translatef(x, y, z)
+}
+
+func (c *Context) Rotatef(angle, x, y, z float32) {
+	gl.Rotatef(angle, x, y, z)
+}
+
+func (c *Context) MatrixMode(mode uint32) {
+	gl.MatrixMode(mode)
+}
+
+func (c *Context) LoadIdentity() {
+	gl.LoadIdentity()
+}
+
+func (c *Context) PushMatrix() {
+	gl.PushMatrix()
+}
+
+func (c *Context) Frustum(left, right, bottom, top, zNear, zFar float64) {
+	gl.Frustum(left, right, bottom, top, zNear, zFar)
 }

@@ -1036,3 +1036,11 @@ func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride 
 func (c *Context) Viewport(x, y, width, height int) {
 	c.Call("viewport", x, y, width, height)
 }
+
+func (c *Context) Translatef(x, y, z float32) {
+	c.Call("translatef", x, y, z) // TODO: test if this actually works
+}
+
+func (c *Context) Rotatef(angle, x, y, z float32) {
+	c.Call("rotatef", angle, x, y, z) // TODO: test if this actually works
+}
