@@ -11,6 +11,7 @@ import (
 	"log"
 	"reflect"
 
+	"fmt"
 	"github.com/go-gl/gl/v2.1/gl"
 )
 
@@ -664,10 +665,19 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	if data == nil {
 		pix = nil
 	} else {
-		img := data.(*image.NRGBA)
-		width = img.Bounds().Dx()
-		height = img.Bounds().Dy()
-		pix = img.Pix
+
+		switch img := data.(type) {
+		case *image.NRGBA:
+			width = img.Bounds().Dx()
+			height = img.Bounds().Dy()
+			pix = img.Pix
+		case *image.RGBA:
+			width = img.Bounds().Dx()
+			height = img.Bounds().Dy()
+			pix = img.Pix
+		default:
+			panic(fmt.Errorf("Image type unsupported: %T", img))
+		}
 	}
 	gl.TexImage2D(uint32(target), int32(level), int32(internalFormat), int32(width), int32(height), int32(0), uint32(format), uint32(kind), gl.Ptr(pix))
 }
@@ -761,6 +771,7 @@ func (c *Context) DrawArrays(mode, first, count int) {
 }
 
 func (c *Context) DrawElements(mode, count, typ, offset int) {
+
 	gl.DrawElements(uint32(mode), int32(count), uint32(typ), gl.PtrOffset(offset))
 }
 
