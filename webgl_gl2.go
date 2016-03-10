@@ -12,6 +12,7 @@ import (
 	"reflect"
 
 	"fmt"
+
 	"github.com/go-gl/gl/v2.1/gl"
 )
 
@@ -616,8 +617,9 @@ func (c *Context) CreateShader(typ int) *Shader {
 }
 
 func (c *Context) ShaderSource(shader *Shader, source string) {
-	glsource := gl.Str(source + "\x00")
-	gl.ShaderSource(shader.uint32, 1, &glsource, nil)
+	glsource, free := gl.Strs(source + "\x00")
+	gl.ShaderSource(shader.uint32, 1, glsource, nil)
+	free()
 }
 
 func (c *Context) CompileShader(shader *Shader) {
