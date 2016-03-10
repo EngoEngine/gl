@@ -807,6 +807,10 @@ func (c *Context) PushMatrix() {
 	gl.PushMatrix()
 }
 
+func (c *Context) PopMatrix() {
+	gl.PopMatrix()
+}
+
 func (c *Context) Frustum(left, right, bottom, top, zNear, zFar float64) {
 	gl.Frustum(left, right, bottom, top, zNear, zFar)
 }
