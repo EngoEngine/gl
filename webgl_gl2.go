@@ -316,6 +316,7 @@ type Context struct {
 	VERTEX_SHADER                                int
 	VIEWPORT                                     int
 	ZERO                                         int
+	TRUE					     int
 }
 
 func NewContext() *Context {
@@ -608,6 +609,7 @@ func NewContext() *Context {
 		VERTEX_SHADER:                      gl.VERTEX_SHADER,
 		VIEWPORT:                           gl.VIEWPORT,
 		ZERO:                               gl.ZERO,
+		TRUE:				    gl.TRUE,
 	}
 }
 
@@ -628,6 +630,11 @@ func (c *Context) CompileShader(shader *Shader) {
 
 func (c *Context) DeleteShader(shader *Shader) {
 	gl.DeleteShader(shader.uint32)
+}
+
+// Returns a parameter from a shader object
+func (c *Context) GetShaderiv(shader *Shader, pname uint32, params *int32) {
+	gl.GetShaderiv(shader.uint32, pname, params)
 }
 
 func (c *Context) CreateProgram() *Program {
@@ -753,6 +760,11 @@ func (c *Context) ValidateProgram(program *Program) {
 		return
 	}
 	gl.ValidateProgram(program.uint32)
+}
+
+// Specify the value of a uniform variable for the current program object
+func (c *Context) Uniform1f(location *UniformLocation, x float32) {
+	gl.Uniform1f(location.int32, x)
 }
 
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
