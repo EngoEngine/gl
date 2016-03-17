@@ -1,0 +1,4 @@
+# ignore ide metadata
+*.pydevproject
+.idea
+.project

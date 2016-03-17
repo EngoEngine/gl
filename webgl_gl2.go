@@ -7,11 +7,11 @@
 package webgl
 
 import (
+	"fmt"
 	"image"
 	"log"
 	"reflect"
-
-	"fmt"
+	"unsafe"
 
 	"github.com/go-gl/gl/v2.1/gl"
 )
@@ -53,7 +53,7 @@ type Context struct {
 	COLOR_BUFFER_BIT                             int
 	COLOR_CLEAR_VALUE                            int
 	COLOR_WRITEMASK                              int
-	COMPILE_STATUS                               int
+	COMPILE_STATUS                               uint32
 	COMPRESSED_TEXTURE_FORMATS                   int
 	CONSTANT_ALPHA                               int
 	CONSTANT_COLOR                               int
@@ -120,7 +120,7 @@ type Context struct {
 	HIGH_INT                                     int
 	INCR                                         int
 	INCR_WRAP                                    int
-	INFO_LOG_LENGTH                              int
+	INFO_LOG_LENGTH                              uint32
 	INT                                          int
 	INT_VEC2                                     int
 	INT_VEC3                                     int
@@ -316,6 +316,7 @@ type Context struct {
 	VERTEX_SHADER                                int
 	VIEWPORT                                     int
 	ZERO                                         int
+	TRUE                                         int
 }
 
 func NewContext() *Context {
@@ -608,6 +609,7 @@ func NewContext() *Context {
 		VERTEX_SHADER:                      gl.VERTEX_SHADER,
 		VIEWPORT:                           gl.VIEWPORT,
 		ZERO:                               gl.ZERO,
+		TRUE:                               gl.TRUE,
 	}
 }
 
@@ -626,8 +628,43 @@ func (c *Context) CompileShader(shader *Shader) {
 	gl.CompileShader(shader.uint32)
 }
 
+// Ptr takes a slice or pointer (to a singular scalar value or the first
+// element of an array or slice) and returns its GL-compatible address.
+func (c *Context) Ptr(data interface{}) unsafe.Pointer {
+	return gl.Ptr(data)
+}
+
+// Str takes a null-terminated Go string and returns its GL-compatible address.
+// This function reaches into Go string storage in an unsafe way so the caller
+// must ensure the string is not garbage collected.
+func (c *Context) Str(str string) *uint8 {
+	return gl.Str(str)
+}
+
+// GoStr takes a null-terminated string returned by OpenGL and constructs a
+// corresponding Go string.
+func (c *Context) GoStr(cstr *uint8) string {
+	return gl.GoStr(cstr)
+}
+
+// DeleteShader will free the shader memory. You should call this in case of
+// a compilation error to avoid leaking memory
 func (c *Context) DeleteShader(shader *Shader) {
 	gl.DeleteShader(shader.uint32)
+}
+
+// Returns a parameter from a shader object
+func (c *Context) GetShaderiv(shader *Shader, pname uint32, params *int32) {
+	gl.GetShaderiv(shader.uint32, pname, params)
+}
+
+// GetShaderInfoLog is a method you can call to get the compilation logs of a shader
+// maxLength​ is the size of infoLog​;
+// this tells OpenGL how many bytes at maximum it will write into infoLog​.
+// length​ is a return value, specifying how many bytes it actually wrote into infoLog​;
+// you may pass NULL if you don't care.
+func (c *Context) GetShaderInfoLog(shader *Shader, bufSize int32, length *int32, infoLog *uint8) {
+	gl.GetShaderInfoLog(shader.uint32, bufSize, length, infoLog)
 }
 
 func (c *Context) CreateProgram() *Program {
@@ -755,6 +792,11 @@ func (c *Context) ValidateProgram(program *Program) {
 	gl.ValidateProgram(program.uint32)
 }
 
+// Specify the value of a uniform variable for the current program object
+func (c *Context) Uniform1f(location *UniformLocation, x float32) {
+	gl.Uniform1f(location.int32, x)
+}
+
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 	gl.Uniform2f(location.int32, x, y)
 }
@@ -807,6 +849,10 @@ func (c *Context) LoadIdentity() {
 
 func (c *Context) PushMatrix() {
 	gl.PushMatrix()
+}
+
+func (c *Context) PopMatrix() {
+	gl.PopMatrix()
 }
 
 func (c *Context) Frustum(left, right, bottom, top, zNear, zFar float64) {
