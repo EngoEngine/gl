@@ -8,17 +8,18 @@ package webgl
 
 import (
 	"errors"
+	"log"
 
 	"github.com/gopherjs/gopherjs/js"
 )
 
-type Texture struct{ js.Object }
-type Buffer struct{ js.Object }
-type FrameBuffer struct{ js.Object }
-type RenderBuffer struct{ js.Object }
-type Program struct{ js.Object }
-type UniformLocation struct{ js.Object }
-type Shader struct{ js.Object }
+type Texture struct{ *js.Object }
+type Buffer struct{ *js.Object }
+type FrameBuffer struct{ *js.Object }
+type RenderBuffer struct{ *js.Object }
+type Program struct{ *js.Object }
+type UniformLocation struct{ *js.Object }
+type Shader struct{ *js.Object }
 
 type ContextAttributes struct {
 	// If Alpha is true, the drawing buffer has an alpha channel for
@@ -53,7 +54,7 @@ func DefaultAttributes() *ContextAttributes {
 }
 
 type Context struct {
-	js.Object
+	*js.Object
 	ARRAY_BUFFER                                 int `js:"ARRAY_BUFFER"`
 	ARRAY_BUFFER_BINDING                         int `js:"ARRAY_BUFFER_BINDING"`
 	ATTACHED_SHADERS                             int `js:"ATTACHED_SHADERS"`
@@ -345,12 +346,13 @@ type Context struct {
 	VERTEX_SHADER                                int `js:"VERTEX_SHADER"`
 	VIEWPORT                                     int `js:"VIEWPORT"`
 	ZERO                                         int `js:"ZERO"`
+	TRUE                                         int `js:"TRUE"`
 }
 
 // NewContext takes an HTML5 canvas object and optional context attributes.
 // If an error is returned it means you won't have access to WebGL
 // functionality.
-func NewContext(canvas js.Object, ca *ContextAttributes) (*Context, error) {
+func NewContext(canvas *js.Object, ca *ContextAttributes) (*Context, error) {
 	if js.Global.Get("WebGLRenderingContext") == js.Undefined {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
 	}
@@ -528,6 +530,12 @@ func (c *Context) ColorMask(r, g, b, a bool) {
 // Compiles the GLSL shader source into binary data used by the WebGLProgram object.
 func (c *Context) CompileShader(shader *Shader) {
 	c.Call("compileShader", shader.Object)
+
+	status := c.Call("getShaderParameter", shader.Object, c.COMPILE_STATUS)
+	if !status.Bool() {
+		info := c.Call("getShaderInfoLog", shader.Object)
+		log.Print("Error: could not compile shader:", info.String())
+	}
 }
 
 // Copies a rectangle of pixels from the current WebGLFramebuffer into a texture image.
@@ -724,7 +732,7 @@ func (c *Context) GetBufferParameter(target, pname int) int {
 
 // TODO: Create type specific variations.
 // Returns the natural type value for a constant parameter.
-func (c *Context) GetParameter(pname int) js.Object {
+func (c *Context) GetParameter(pname int) *js.Object {
 	return c.Call("getParameter", pname)
 }
 
@@ -735,13 +743,13 @@ func (c *Context) GetError() int {
 
 // TODO: Create type specific variations.
 // Enables a passed extension, otherwise returns null.
-func (c *Context) GetExtension(name string) js.Object {
+func (c *Context) GetExtension(name string) *js.Object {
 	return c.Call("getExtension", name)
 }
 
 // TODO: Create type specific variations.
 // Gets a parameter value for a given target and attachment.
-func (c *Context) GetFramebufferAttachmentParameter(target, attachment, pname int) js.Object {
+func (c *Context) GetFramebufferAttachmentParameter(target, attachment, pname int) *js.Object {
 	return c.Call("getFramebufferAttachmentParameter", target, attachment, pname)
 }
 
@@ -771,7 +779,7 @@ func (c *Context) GetRenderbufferParameter(target, pname int) int {
 
 // TODO: Create type specific variations.
 // Returns the value of the parameter associated with pname for a shader object.
-func (c *Context) GetShaderParameter(shader *Shader, pname int) js.Object {
+func (c *Context) GetShaderParameter(shader *Shader, pname int) *js.Object {
 	return c.Call("getShaderParameter", shader.Object, pname)
 }
 
@@ -802,13 +810,13 @@ func (c *Context) GetSupportedExtensions() []string {
 
 // TODO: Create type specific variations.
 // Returns the value for a parameter on an active texture unit.
-func (c *Context) GetTexParameter(target, pname int) js.Object {
+func (c *Context) GetTexParameter(target, pname int) *js.Object {
 	return c.Call("getTexParameter", target, pname)
 }
 
 // TODO: Create type specific variations.
 // Gets the uniform value for a specific location in a program.
-func (c *Context) GetUniform(program *Program, location *UniformLocation) js.Object {
+func (c *Context) GetUniform(program *Program, location *UniformLocation) *js.Object {
 	return c.Call("getUniform", program.Object, location.Object)
 }
 
@@ -821,7 +829,7 @@ func (c *Context) GetUniformLocation(program *Program, name string) *UniformLoca
 // TODO: Create type specific variations.
 // Returns data for a particular characteristic of a vertex
 // attribute at an index in a vertex attribute array.
-func (c *Context) GetVertexAttrib(index, pname int) js.Object {
+func (c *Context) GetVertexAttrib(index, pname int) *js.Object {
 	return c.Call("getVertexAttrib", index, pname)
 }
 
@@ -881,6 +889,12 @@ func (c *Context) LineWidth(width float64) {
 // to a program so it can be used by the graphics processing unit (GPU).
 func (c *Context) LinkProgram(program *Program) {
 	c.Call("linkProgram", program.Object)
+
+	param := c.Call("getProgramParameter", program.Object, c.LINK_STATUS)
+	if !param.Bool() {
+		info := c.Call("getProgramInfoLog", program.Object)
+		log.Print("Error: could not link program: ", info.String())
+	}
 }
 
 // Sets pixel storage modes for readPixels and unpacking of textures
@@ -922,13 +936,7 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 
 // Loads the supplied pixel data into a texture.
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
-	var pix js.Object
-	if data == nil {
-		pix = nil
-	} else {
-		pix = data.(js.Object)
-	}
-	c.Call("texImage2D", target, level, internalFormat, format, kind, pix)
+	c.Call("texImage2D", target, level, internalFormat, format, kind, data)
 }
 
 // Sets texture parameters for the current texture unit.
@@ -1010,7 +1018,7 @@ func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, va
 
 // Set the program object to use for rendering.
 func (c *Context) UseProgram(program *Program) {
-	c.Call("useProgram", program.Object)
+	c.Call("useProgram", *program.Object) // TODO: pointer vs non-pointer
 }
 
 // Returns whether a given program can run in the current WebGL state.
