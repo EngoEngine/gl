@@ -768,6 +768,14 @@ func (c *Context) BlendFunc(src, dst int) {
 	gl.BlendFunc(uint32(src), uint32(dst))
 }
 
+func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
+	// TODO: count value of 1 is currently hardcoded.
+	//       Perhaps it should be len(value) / 16 or something else?
+	//       In OpenGL 2.1 it is a manually supplied parameter, but WebGL does not have it.
+	//       Not sure if WebGL automatically deduces it and supports count values greater than 1, or if 1 is always assumed.
+	gl.UniformMatrix2fv(location.int32, 1, transpose, &value[0])
+}
+
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
 	// TODO: count value of 1 is currently hardcoded.
 	//       Perhaps it should be len(value) / 16 or something else?
