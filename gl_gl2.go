@@ -49,6 +49,7 @@ type Context struct {
 	BYTE                                         int
 	CCW                                          int
 	CLAMP_TO_EDGE                                int
+	CLAMP_TO_BORDER                              int
 	COLOR_ATTACHMENT0                            int
 	COLOR_BUFFER_BIT                             int
 	COLOR_CLEAR_VALUE                            int
@@ -347,6 +348,7 @@ func NewContext() *Context {
 		BYTE:                       gl.BYTE,
 		CCW:                        gl.CCW,
 		CLAMP_TO_EDGE:              gl.CLAMP_TO_EDGE,
+		CLAMP_TO_BORDER:            gl.CLAMP_TO_BORDER,
 		COLOR_ATTACHMENT0:          gl.COLOR_ATTACHMENT0,
 		COLOR_BUFFER_BIT:           gl.COLOR_BUFFER_BIT,
 		COLOR_CLEAR_VALUE:          gl.COLOR_CLEAR_VALUE,
@@ -653,6 +655,11 @@ func (c *Context) DeleteShader(shader *Shader) {
 	gl.DeleteShader(shader.uint32)
 }
 
+// DeleteTexture will free the texture from the GPU memory
+func (c *Context) DeleteTexture(texture *Texture) {
+	gl.DeleteTextures(1, &[]uint32{texture.uint32}[0])
+}
+
 // Returns a parameter from a shader object
 func (c *Context) GetShaderiv(shader *Shader, pname uint32, params *int32) {
 	gl.GetShaderiv(shader.uint32, pname, params)
@@ -783,7 +790,6 @@ func (c *Context) UniformMatrix3fv(location *UniformLocation, transpose bool, va
 	//       Not sure if WebGL automatically deduces it and supports count values greater than 1, or if 1 is always assumed.
 	gl.UniformMatrix3fv(location.int32, 1, transpose, &value[0])
 }
-
 
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
 	// TODO: count value of 1 is currently hardcoded.

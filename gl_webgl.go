@@ -79,6 +79,7 @@ type Context struct {
 	BYTE                                         int `js:"BYTE"`
 	CCW                                          int `js:"CCW"`
 	CLAMP_TO_EDGE                                int `js:"CLAMP_TO_EDGE"`
+	CLAMP_TO_BORDER                              int `js:"CLAMP_TO_BORDER"`
 	COLOR_ATTACHMENT0                            int `js:"COLOR_ATTACHMENT0"`
 	COLOR_BUFFER_BIT                             int `js:"COLOR_BUFFER_BIT"`
 	COLOR_CLEAR_VALUE                            int `js:"COLOR_CLEAR_VALUE"`
