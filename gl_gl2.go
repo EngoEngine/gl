@@ -661,17 +661,21 @@ func (c *Context) DeleteTexture(texture *Texture) {
 }
 
 // Returns a parameter from a shader object
-func (c *Context) GetShaderiv(shader *Shader, pname uint32, params *int32) {
-	gl.GetShaderiv(shader.uint32, pname, params)
+func (c *Context) GetShaderiv(shader *Shader, pname uint32) bool {
+	var success int32
+	gl.GetShaderiv(shader.uint32, pname, &success)
+	return success == int32(gl.TRUE)
 }
 
 // GetShaderInfoLog is a method you can call to get the compilation logs of a shader
-// maxLength​ is the size of infoLog​;
-// this tells OpenGL how many bytes at maximum it will write into infoLog​.
-// length​ is a return value, specifying how many bytes it actually wrote into infoLog​;
-// you may pass NULL if you don't care.
-func (c *Context) GetShaderInfoLog(shader *Shader, bufSize int32, length *int32, infoLog *uint8) {
-	gl.GetShaderInfoLog(shader.uint32, bufSize, length, infoLog)
+func (c *Context) GetShaderInfoLog(shader *Shader) string {
+	var maxLength int32
+	gl.GetShaderiv(shader.uint32, gl.INFO_LOG_LENGTH, &maxLength)
+
+	errorLog := make([]byte, maxLength)
+	gl.GetShaderInfoLog(shader.uint32, maxLength, &maxLength, (*uint8)(gl.Ptr(errorLog)))
+
+	return string(errorLog)
 }
 
 func (c *Context) CreateProgram() *Program {
