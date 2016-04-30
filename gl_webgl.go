@@ -801,7 +801,7 @@ func (c *Context) GetShaderSource(shader *Shader) string {
 
 // Returns a parameter from a shader object
 func (c *Context) GetShaderiv(shader *Shader, pname uint32) bool {
-	return c.Call("getShaderiv", shader.Object, pname).Bool()
+	return c.Call("getShaderParameter", shader.Object, pname).Bool()
 }
 
 // Returns a slice of supported extension strings.
