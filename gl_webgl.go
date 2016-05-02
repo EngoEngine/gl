@@ -483,6 +483,10 @@ func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
 
 // Binds a named texture object to a target.
 func (c *Context) BindTexture(target int, texture *Texture) {
+	if texture == nil {
+		c.Call("bindTexture", target, nil)
+		return
+	}
 	c.Call("bindTexture", target, texture.Object)
 }
 
