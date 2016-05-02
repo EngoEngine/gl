@@ -767,6 +767,10 @@ func (c *Context) EnableVertexAttribArray(index int) {
 	gl.EnableVertexAttribArray(uint32(index))
 }
 
+func (c *Context) DisableVertexAttribArray(index int) {
+	gl.DisableVertexAttribArray(uint32(index))
+}
+
 func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride int, offset int) {
 	gl.VertexAttribPointer(uint32(index), int32(size), uint32(typ), normal, int32(stride), gl.PtrOffset(offset))
 }
@@ -842,7 +846,6 @@ func (c *Context) DrawArrays(mode, first, count int) {
 }
 
 func (c *Context) DrawElements(mode, count, typ, offset int) {
-
 	gl.DrawElements(uint32(mode), int32(count), uint32(typ), gl.PtrOffset(offset))
 }
 
