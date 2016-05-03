@@ -468,16 +468,28 @@ func (c *Context) BindAttribLocation(program *Program, index int, name string) {
 
 // Associates a buffer with a buffer target.
 func (c *Context) BindBuffer(target int, buffer *Buffer) {
+	if buffer == nil {
+		c.Call("bindBuffer", target, nil)
+		return
+	}
 	c.Call("bindBuffer", target, buffer.Object)
 }
 
 // Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
 func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
+	if framebuffer == nil {
+		c.Call("bindFramebuffer", target, nil)
+		return
+	}
 	c.Call("bindFramebuffer", target, framebuffer.Object)
 }
 
 // Binds a WebGLRenderbuffer object to be used for rendering.
 func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
+	if renderbuffer == nil {
+		c.Call("bindRenderBuffer", target, nil)
+		return
+	}
 	c.Call("bindRenderbuffer", target, renderbuffer)
 }
 
