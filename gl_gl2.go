@@ -779,6 +779,10 @@ func (c *Context) Enable(flag int) {
 	gl.Enable(uint32(flag))
 }
 
+func (c *Context) Disable(flag int) {
+	gl.Disable(uint32(flag))
+}
+
 func (c *Context) BlendFunc(src, dst int) {
 	gl.BlendFunc(uint32(src), uint32(dst))
 }
@@ -855,6 +859,10 @@ func (c *Context) ClearColor(r, g, b, a float32) {
 
 func (c *Context) Viewport(x, y, width, height int) {
 	gl.Viewport(int32(x), int32(y), int32(width), int32(height))
+}
+
+func (c *Context) Scissor(x, y, width, height int) {
+	gl.Scissor(int32(x), int32(y), int32(width), int32(height))
 }
 
 func (c *Context) Clear(flags int) {
