@@ -160,6 +160,7 @@ type Context struct {
 	MEDIUM_FLOAT                                 int
 	MEDIUM_INT                                   int
 	MIRRORED_REPEAT                              int
+	MULTISAMPLE                                  int
 	NEAREST                                      int
 	NEAREST_MIPMAP_LINEAR                        int
 	NEAREST_MIPMAP_NEAREST                       int
@@ -457,6 +458,7 @@ func NewContext() *Context {
 		MEDIUM_FLOAT:                     gl.MEDIUM_FLOAT,
 		MEDIUM_INT:                       gl.MEDIUM_INT,
 		MIRRORED_REPEAT:                  gl.MIRRORED_REPEAT,
+		MULTISAMPLE:                      gl.MULTISAMPLE,
 		NEAREST:                          gl.NEAREST,
 		NEAREST_MIPMAP_LINEAR:            gl.NEAREST_MIPMAP_LINEAR,
 		NEAREST_MIPMAP_NEAREST:           gl.NEAREST_MIPMAP_NEAREST,
@@ -686,6 +688,10 @@ func (c *Context) AttachShader(program *Program, shader *Shader) {
 	gl.AttachShader(program.uint32, shader.uint32)
 }
 
+func (c *Context) LineWidth(width float32) {
+	gl.LineWidth(width)
+}
+
 func (c *Context) LinkProgram(program *Program) {
 	gl.LinkProgram(program.uint32)
 }
@@ -838,6 +844,10 @@ func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 
 func (c *Context) Uniform3f(location *UniformLocation, x, y, z float32) {
 	gl.Uniform3f(location.int32, x, y, z)
+}
+
+func (c *Context) Uniform4f(location *UniformLocation, x, y, z, w float32) {
+	gl.Uniform4f(location.int32, x, y, z, w)
 }
 
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {

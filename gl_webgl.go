@@ -190,6 +190,7 @@ type Context struct {
 	MEDIUM_FLOAT                                 int    `js:"MEDIUM_FLOAT"`
 	MEDIUM_INT                                   int    `js:"MEDIUM_INT"`
 	MIRRORED_REPEAT                              int    `js:"MIRRORED_REPEAT"`
+	MULTISAMPLE                                  int    `js:"MULTISAMPLE"`
 	NEAREST                                      int    `js:"NEAREST"`
 	NEAREST_MIPMAP_LINEAR                        int    `js:"NEAREST_MIPMAP_LINEAR"`
 	NEAREST_MIPMAP_NEAREST                       int    `js:"NEAREST_MIPMAP_NEAREST"`
