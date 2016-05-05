@@ -8,6 +8,7 @@ package gl
 
 import (
 	"errors"
+	"image"
 	"log"
 
 	"github.com/gopherjs/gopherjs/js"
@@ -959,7 +960,14 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 
 // Loads the supplied pixel data into a texture.
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
-	c.Call("texImage2D", target, level, internalFormat, format, kind, data)
+	switch img := data.(type) {
+	case *image.NRGBA:
+		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, img.Pix)
+	case *image.RGBA:
+		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, img.Pix)
+	default:
+		c.Call("texImage2D", target, level, internalFormat, format, kind, data)
+	}
 }
 
 // Sets texture parameters for the current texture unit.
