@@ -5,6 +5,7 @@ import (
 
 	"golang.org/x/mobile/gl"
 	"image"
+	"reflect"
 	"unsafe"
 )
 
@@ -714,23 +715,50 @@ func (c *Context) BindTexture(target int, texture *Texture) {
 // Creates a buffer in memory and initializes it with array data.
 // If no array is provided, the contents of the buffer is initialized to 0.
 func (c *Context) BufferData(target int, data interface{}, usage int) {
-	ptr := unsafe.Pointer(&data)
-	d := (*[]byte)(ptr)
-
+	var b []byte
 	switch arr := data.(type) {
 	case []uint16:
-		log.Println(len(arr), len(*d))
+		fheader := (*reflect.SliceHeader)(unsafe.Pointer(&arr))
+
+		header := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+		header.Cap = 2 * fheader.Cap
+		header.Len = 2 * fheader.Len
+		header.Data = fheader.Data
+
 	case []float32:
-		log.Println(len(arr), len(*d))
+		fheader := (*reflect.SliceHeader)(unsafe.Pointer(&arr))
+
+		header := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+		header.Cap = 4 * fheader.Cap
+		header.Len = 4 * fheader.Len
+		header.Data = fheader.Data
 	}
 
-	c.ctx.BufferData(gl.Enum(target), *d, gl.Enum(usage))
+	c.ctx.BufferData(gl.Enum(target), b, gl.Enum(usage))
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
-	//c.ctx.BufferSubData(gl.Enum(target), offset, data)
-	// TODO: fix :)
+	var b []byte
+	switch arr := data.(type) {
+	case []uint16:
+		fheader := (*reflect.SliceHeader)(unsafe.Pointer(&arr))
+
+		header := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+		header.Cap = 2 * fheader.Cap
+		header.Len = 2 * fheader.Len
+		header.Data = fheader.Data
+
+	case []float32:
+		fheader := (*reflect.SliceHeader)(unsafe.Pointer(&arr))
+
+		header := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+		header.Cap = 4 * fheader.Cap
+		header.Len = 4 * fheader.Len
+		header.Data = fheader.Data
+	}
+
+	c.ctx.BufferSubData(gl.Enum(target), offset, b)
 }
 
 // Returns whether the currently bound WebGLFramebuffer is complete.
@@ -969,10 +997,9 @@ func (c *Context) GetError() int {
 	return int(c.ctx.GetError())
 }
 
-// TODO: Create type specific variations.
 // Enables a passed extension, otherwise returns null.
 func (c *Context) GetExtension(name string) {
-
+	// TODO: doesn't seem to exist on mobile?
 }
 
 // TODO: Create type specific variations.
@@ -1032,7 +1059,7 @@ func (c *Context) GetShaderSource(shader *Shader) string {
 
 // Returns a slice of supported extension strings.
 func (c *Context) GetSupportedExtensions() []string {
-	return nil
+	return nil // TODO: extensions dont exist on mobile?
 }
 
 // Returns the value for a parameter on an active texture unit.
@@ -1171,13 +1198,9 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 
 	switch img := data.(type) {
 	case *image.NRGBA:
-		ptr := unsafe.Pointer(&img.Pix)
-		d := (*[]byte)(ptr)
-		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *d)
+		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
 	case *image.RGBA:
-		ptr := unsafe.Pointer(&img.Pix)
-		d := (*[]byte)(ptr)
-		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *d)
+		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
 	default:
 		log.Println("Warning: TexImage2D does not support your requested type (yet)")
 	}
