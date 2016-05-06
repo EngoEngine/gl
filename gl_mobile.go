@@ -716,12 +716,21 @@ func (c *Context) BindTexture(target int, texture *Texture) {
 func (c *Context) BufferData(target int, data interface{}, usage int) {
 	ptr := unsafe.Pointer(&data)
 	d := (*[]byte)(ptr)
+
+	switch arr := data.(type) {
+	case []uint16:
+		log.Println(len(arr), len(*d))
+	case []float32:
+		log.Println(len(arr), len(*d))
+	}
+
 	c.ctx.BufferData(gl.Enum(target), *d, gl.Enum(usage))
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 	//c.ctx.BufferSubData(gl.Enum(target), offset, data)
+	// TODO: fix :)
 }
 
 // Returns whether the currently bound WebGLFramebuffer is complete.
@@ -1159,12 +1168,16 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	if format != internalFormat {
 		log.Println("Warning: format and internalFormat should be the same for TexImage2D on mobile system")
 	}
+
 	switch img := data.(type) {
 	case *image.NRGBA:
-		//		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), data)
+		ptr := unsafe.Pointer(&img.Pix)
+		d := (*[]byte)(ptr)
+		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *d)
 	case *image.RGBA:
-		//		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), data)
-		log.Println(img.Bounds().Dx(), img.Bounds().Dx()) // TODO: remove this line and uncomment lines above
+		ptr := unsafe.Pointer(&img.Pix)
+		d := (*[]byte)(ptr)
+		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *d)
 	default:
 		log.Println("Warning: TexImage2D does not support your requested type (yet)")
 	}
