@@ -905,8 +905,8 @@ func (c *Context) IsEnabled(capability int) bool {
 }
 
 // Sets the width of lines in WebGL.
-func (c *Context) LineWidth(width float64) {
-	c.Call("lineWidth", width)
+func (c *Context) LineWidth(width float32) {
+	c.Call("lineWidth", float64(width))
 }
 
 // Links an attached vertex shader and an attached fragment shader
