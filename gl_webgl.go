@@ -905,8 +905,8 @@ func (c *Context) IsEnabled(capability int) bool {
 }
 
 // Sets the width of lines in WebGL.
-func (c *Context) LineWidth(width float64) {
-	c.Call("lineWidth", width)
+func (c *Context) LineWidth(width float32) {
+	c.Call("lineWidth", float64(width))
 }
 
 // Links an attached vertex shader and an attached fragment shader
@@ -1074,12 +1074,4 @@ func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride 
 // the rendering results of the drawing buffer.
 func (c *Context) Viewport(x, y, width, height int) {
 	c.Call("viewport", x, y, width, height)
-}
-
-func (c *Context) Translatef(x, y, z float32) {
-	c.Call("translatef", x, y, z) // TODO: test if this actually works
-}
-
-func (c *Context) Rotatef(angle, x, y, z float32) {
-	c.Call("rotatef", angle, x, y, z) // TODO: test if this actually works
 }
