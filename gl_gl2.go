@@ -871,6 +871,12 @@ func (c *Context) Viewport(x, y, width, height int) {
 	gl.Viewport(int32(x), int32(y), int32(width), int32(height))
 }
 
+func (c *Context) GetViewport() [4]int32 {
+	var params [4]int32
+	gl.GetIntegerv(gl.VIEWPORT, &params[0])
+	return params
+}
+
 func (c *Context) Scissor(x, y, width, height int) {
 	gl.Scissor(int32(x), int32(y), int32(width), int32(height))
 }
