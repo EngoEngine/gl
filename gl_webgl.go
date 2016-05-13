@@ -677,6 +677,9 @@ func (c *Context) DrawElements(mode, count, typ, offset int) {
 
 // Turns on specific WebGL capabilities for this context.
 func (c *Context) Enable(cap int) {
+	if cap == 0 {
+		return
+	}
 	c.Call("enable", cap)
 }
 
