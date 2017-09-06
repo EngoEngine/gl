@@ -1052,7 +1052,11 @@ func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, va
 
 // Set the program object to use for rendering.
 func (c *Context) UseProgram(program *Program) {
-	c.Call("useProgram", *program.Object) // TODO: pointer vs non-pointer
+	if program == nil {
+		c.Call("useProgram", nil)
+		return
+	}
+	c.Call("useProgram", *program.Object)
 }
 
 // Returns whether a given program can run in the current WebGL state.

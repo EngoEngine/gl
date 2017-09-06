@@ -684,6 +684,43 @@ func (c *Context) CreateProgram() *Program {
 	return &Program{gl.CreateProgram()}
 }
 
+func (c *Context) DeleteProgram(program *Program) {
+	gl.DeleteProgram(program.uint32)
+}
+
+// Binds a generic vertex index to a user-defined attribute variable.
+func (c *Context) BindAttribLocation(program *Program, index int, name string) {
+	gl.BindAttribLocation(program.uint32, uint32(index), gl.Str(name+"\x00"))
+}
+
+// Returns the value of the program parameter that corresponds to a supplied pname
+// which is interpreted as an int.
+func (c *Context) GetProgramParameteri(program *Program, pname int) int {
+	var success int32 = gl.FALSE
+	gl.GetProgramiv(program.uint32, uint32(pname), &success)
+	return int(success)
+}
+
+// Returns the value of the program parameter that corresponds to a supplied pname
+// which is interpreted as a bool.
+func (c *Context) GetProgramParameterb(program *Program, pname int) bool {
+	var success int32 = gl.FALSE
+	gl.GetProgramiv(program.uint32, uint32(pname), &success)
+	return success == gl.TRUE
+}
+
+// Returns information about the last error that occurred during
+// the failed linking or validation of a WebGL program object.
+func (c *Context) GetProgramInfoLog(program *Program) string {
+	var maxLength int32
+	gl.GetProgramiv(program.uint32, gl.INFO_LOG_LENGTH, &maxLength)
+
+	errorLog := make([]byte, maxLength)
+	gl.GetProgramInfoLog(program.uint32, maxLength, &maxLength, (*uint8)(gl.Ptr(errorLog)))
+
+	return string(errorLog)
+}
+
 func (c *Context) AttachShader(program *Program, shader *Shader) {
 	gl.AttachShader(program.uint32, shader.uint32)
 }
@@ -756,6 +793,11 @@ func (c *Context) CreateBuffer() *Buffer {
 	return &Buffer{loc}
 }
 
+// Delete a specific buffer.
+func (c *Context) DeleteBuffer(buffer *Buffer) {
+	gl.DeleteBuffers(1, &[]uint32{buffer.uint32}[0])
+}
+
 func (c *Context) BindBuffer(target int, buffer *Buffer) {
 	if buffer == nil {
 		gl.BindBuffer(uint32(target), 0)
@@ -791,6 +833,10 @@ func (c *Context) Disable(flag int) {
 
 func (c *Context) BlendFunc(src, dst int) {
 	gl.BlendFunc(uint32(src), uint32(dst))
+}
+
+func (c *Context) BlendEquation(mode int) {
+	gl.BlendEquation(uint32(mode))
 }
 
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
@@ -836,6 +882,11 @@ func (c *Context) ValidateProgram(program *Program) {
 // Specify the value of a uniform variable for the current program object
 func (c *Context) Uniform1f(location *UniformLocation, x float32) {
 	gl.Uniform1f(location.int32, x)
+}
+
+// Assigns a integer value to a uniform variable for the current program object.
+func (c *Context) Uniform1i(location *UniformLocation, x int) {
+	gl.Uniform1i(location.int32, int32(x))
 }
 
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
