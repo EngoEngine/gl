@@ -5,10 +5,11 @@ package gl
 import (
 	"log"
 
-	"golang.org/x/mobile/gl"
 	"image"
 	"reflect"
 	"unsafe"
+
+	"golang.org/x/mobile/gl"
 )
 
 type Texture struct{ gl.Texture }
@@ -1019,8 +1020,7 @@ func (c *Context) GetProgramParameteri(program *Program, pname int) int {
 // Returns the value of the program parameter that corresponds to a supplied pname
 // which is interpreted as a bool.
 func (c *Context) GetProgramParameterb(program *Program, pname int) bool {
-	log.Println("GetProgramParameterb not found on mobile system")
-	return false
+	return c.ctx.GetProgrami(program.Program, gl.Enum(pname)) == gl.TRUE
 }
 
 // Returns information about the last error that occurred during
@@ -1290,6 +1290,10 @@ func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, va
 
 // Set the program object to use for rendering.
 func (c *Context) UseProgram(program *Program) {
+	if program == nil {
+		c.ctx.UseProgram(gl.Program{Value: 0})
+		return
+	}
 	c.ctx.UseProgram(program.Program)
 }
 
