@@ -13,7 +13,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/go-gl/gl/v2.1/gl"
+	"github.com/DualGo/gl/v2.1/gl"
 )
 
 type Texture struct{ uint32 }
