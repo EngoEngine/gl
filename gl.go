@@ -6,7 +6,6 @@ package gl // import "engo.io/gl"
 
 /*
 Objects:
-
 Texture
 Buffer
 FrameBuffer
@@ -14,9 +13,7 @@ RenderBuffer
 Program
 UniformLocation
 Shader
-
 PerFragment:
-
 void blendColor(float red, float green, float blue, float alpha)
 void blendEquation(enum mode)
 void blendEquationSeparate(enum modeRGB, enum modeAlpha)
@@ -28,9 +25,7 @@ void stencilFunc(int func, int ref, uint mask)
 void stencilFuncSeparate(enum face, enum func, int ref, uint mask)
 void stencilOp(enum fail, enum zfail, enum zpass)
 void stencilOpSeparate(enum face, enum fail, enum zfail, enum zpass)
-
 FrameBuffer:
-
 void clear(ulong mask)
 void clearColor(float red, float green, float blue, float alpha)
 void clearDepth(float depth)
@@ -47,9 +42,7 @@ void framebufferRenderbuffer(enum target, enum attachment, enum renderbuffertarg
 bool isFramebuffer(Object framebuffer)
 void framebufferTexture2D(enum target, enum attachment, enum textarget, Object texture, int level)
 any getFramebufferAttachmentParameter(enum target, enum attachment, enum pname)
-
 Buffer:
-
 void bindBuffer(enum target, Object buffer)
 void bufferData(enum target, long size, enum usage)
 void bufferData(enum target, Object data, enum usage)
@@ -58,22 +51,16 @@ Object createBuffer()
 void deleteBuffer(Object buffer)
 any getBufferParameter(enum target, enum pname)
 bool isBuffer(Object buffer)
-
 View:
-
 void depthRange(float zNear, float zFar)
 void scissor(int x, int y, long width, long height)
 void viewport(int x, int y, long width, long height)
-
 Rasterization:
-
 void cullFace(enum mode)
 void frontFace(enum mode)
 void lineWidth(float width)
 void polygonOffset(float factor, float units)
-
 Shaders:
-
 void attachShader(Object program, Object shader)
 void bindAttribLocation(Object program, uint index, string name)
 void compileShader(Object shader)
@@ -94,9 +81,7 @@ void linkProgram(Object program)
 void shaderSource(Object shader, string source)
 void useProgram(Object program)
 void validateProgram(Object program)
-
 Textures:
-
 void activeTexture(enum texture)
 void bindTexture(enum target, Object texture)
 void copyTexImage2D(enum target, int level, enum internalformat, int x, int y, long width, long height, int border)
@@ -112,10 +97,7 @@ void texParameterf(enum target, enum pname, float param)
 void texParameteri(enum target, enum pname, int param)
 void texSubImage2D(enum target, int level, int xoffset, int yoffset, long width, long height, enum format, enum type, Object pixels)
 void texSubImage2D(enum target, int level, int xoffset, int yoffset, enum format, enum type, Object object)
-
-
 Special:
-
 void disable(enum cap)
 void enable(enum cap)
 void finish()
@@ -125,9 +107,7 @@ any getParameter(enum pname)
 void hint(enum target, enum mode)
 bool isEnabled(enum cap)
 void pixelStorei(enum pname, int param)
-
 Uniforms and Attributes:
-
 void disableVertexAttribArray(uint index)
 void enableVertexAttribArray(uint index)
 Object getActiveAttrib(Object program, uint index)
@@ -143,23 +123,16 @@ void uniformMatrix[234]fv(uint location, bool transpose, Array)
 void vertexAttrib[1234]f(uint index, ...)
 void vertexAttrib[1234]fv(uint index, Array value)
 void vertexAttribPointer(uint index, int size, enum type, bool normalized, long stride, long offset)
-
 RenderBuffer:
-
 void bindRenderbuffer(enum target, Object renderbuffer)
 Object createRenderbuffer()
 void deleteRenderbuffer(Object renderbuffer)
 any getRenderbufferParameter(enum target, enum pname)
 bool isRenderbuffer(Object renderbuffer)
 void renderbufferStorage(enum target, enum internalformat, long width, long height)
-
 DrawBuffer:
-
 void drawArrays(enum mode, int first, long count)
 void drawElements(enum mode, long count, enum type, long offset)
-
 ReadPixels:
-
 void readPixels(int x, int y, long width, long height, enum format, enum type, Object pixels)
-
 */
