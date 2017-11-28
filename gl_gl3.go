@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build !netgo,!android, !gl3
+// +build gl3
 
 package gl
 
@@ -13,7 +13,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/go-gl/gl/v2.1/gl"
+	"github.com/DualGo/gl/v4.5-core/gl"
 )
 
 type Texture struct{ uint32 }
