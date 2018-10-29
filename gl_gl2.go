@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // +build darwin,!arm,!arm64 linux windows
-// +build !ios,!android,!netgo
+// +build !ios,!android,!netgo,!nogl
 
 package gl
 
