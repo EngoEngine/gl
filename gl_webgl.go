@@ -12,16 +12,16 @@ import (
 	"image"
 	"log"
 
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
-type Texture struct{ *js.Object }
-type Buffer struct{ *js.Object }
-type FrameBuffer struct{ *js.Object }
-type RenderBuffer struct{ *js.Object }
-type Program struct{ *js.Object }
-type UniformLocation struct{ *js.Object }
-type Shader struct{ *js.Object }
+type Texture struct{ js.Value }
+type Buffer struct{ js.Value }
+type FrameBuffer struct{ js.Value }
+type RenderBuffer struct{ js.Value }
+type Program struct{ js.Value }
+type UniformLocation struct{ js.Value }
+type Shader struct{ js.Value }
 
 type ContextAttributes struct {
 	// If Alpha is true, the drawing buffer has an alpha channel for
@@ -56,333 +56,631 @@ func DefaultAttributes() *ContextAttributes {
 }
 
 type Context struct {
-	*js.Object
-	ARRAY_BUFFER                                 int    `js:"ARRAY_BUFFER"`
-	ARRAY_BUFFER_BINDING                         int    `js:"ARRAY_BUFFER_BINDING"`
-	ATTACHED_SHADERS                             int    `js:"ATTACHED_SHADERS"`
-	BACK                                         int    `js:"BACK"`
-	BLEND                                        int    `js:"BLEND"`
-	BLEND_COLOR                                  int    `js:"BLEND_COLOR"`
-	BLEND_DST_ALPHA                              int    `js:"BLEND_DST_ALPHA"`
-	BLEND_DST_RGB                                int    `js:"BLEND_DST_RGB"`
-	BLEND_EQUATION                               int    `js:"BLEND_EQUATION"`
-	BLEND_EQUATION_ALPHA                         int    `js:"BLEND_EQUATION_ALPHA"`
-	BLEND_EQUATION_RGB                           int    `js:"BLEND_EQUATION_RGB"`
-	BLEND_SRC_ALPHA                              int    `js:"BLEND_SRC_ALPHA"`
-	BLEND_SRC_RGB                                int    `js:"BLEND_SRC_RGB"`
-	BLUE_BITS                                    int    `js:"BLUE_BITS"`
-	BOOL                                         int    `js:"BOOL"`
-	BOOL_VEC2                                    int    `js:"BOOL_VEC2"`
-	BOOL_VEC3                                    int    `js:"BOOL_VEC3"`
-	BOOL_VEC4                                    int    `js:"BOOL_VEC4"`
-	BROWSER_DEFAULT_WEBGL                        int    `js:"BROWSER_DEFAULT_WEBGL"`
-	BUFFER_SIZE                                  int    `js:"BUFFER_SIZE"`
-	BUFFER_USAGE                                 int    `js:"BUFFER_USAGE"`
-	BYTE                                         int    `js:"BYTE"`
-	CCW                                          int    `js:"CCW"`
-	CLAMP_TO_EDGE                                int    `js:"CLAMP_TO_EDGE"`
-	CLAMP_TO_BORDER                              int    `js:"CLAMP_TO_BORDER"`
-	COLOR_ATTACHMENT0                            int    `js:"COLOR_ATTACHMENT0"`
-	COLOR_BUFFER_BIT                             int    `js:"COLOR_BUFFER_BIT"`
-	COLOR_CLEAR_VALUE                            int    `js:"COLOR_CLEAR_VALUE"`
-	COLOR_WRITEMASK                              int    `js:"COLOR_WRITEMASK"`
-	COMPILE_STATUS                               uint32 `js:"COMPILE_STATUS"`
-	COMPRESSED_TEXTURE_FORMATS                   int    `js:"COMPRESSED_TEXTURE_FORMATS"`
-	CONSTANT_ALPHA                               int    `js:"CONSTANT_ALPHA"`
-	CONSTANT_COLOR                               int    `js:"CONSTANT_COLOR"`
-	CONTEXT_LOST_WEBGL                           int    `js:"CONTEXT_LOST_WEBGL"`
-	CULL_FACE                                    int    `js:"CULL_FACE"`
-	CULL_FACE_MODE                               int    `js:"CULL_FACE_MODE"`
-	CURRENT_PROGRAM                              int    `js:"CURRENT_PROGRAM"`
-	CURRENT_VERTEX_ATTRIB                        int    `js:"CURRENT_VERTEX_ATTRIB"`
-	CW                                           int    `js:"CW"`
-	DECR                                         int    `js:"DECR"`
-	DECR_WRAP                                    int    `js:"DECR_WRAP"`
-	DELETE_STATUS                                int    `js:"DELETE_STATUS"`
-	DEPTH_ATTACHMENT                             int    `js:"DEPTH_ATTACHMENT"`
-	DEPTH_BITS                                   int    `js:"DEPTH_BITS"`
-	DEPTH_BUFFER_BIT                             int    `js:"DEPTH_BUFFER_BIT"`
-	DEPTH_CLEAR_VALUE                            int    `js:"DEPTH_CLEAR_VALUE"`
-	DEPTH_COMPONENT                              int    `js:"DEPTH_COMPONENT"`
-	DEPTH_COMPONENT16                            int    `js:"DEPTH_COMPONENT16"`
-	DEPTH_FUNC                                   int    `js:"DEPTH_FUNC"`
-	DEPTH_RANGE                                  int    `js:"DEPTH_RANGE"`
-	DEPTH_STENCIL                                int    `js:"DEPTH_STENCIL"`
-	DEPTH_STENCIL_ATTACHMENT                     int    `js:"DEPTH_STENCIL_ATTACHMENT"`
-	DEPTH_TEST                                   int    `js:"DEPTH_TEST"`
-	DEPTH_WRITEMASK                              int    `js:"DEPTH_WRITEMASK"`
-	DITHER                                       int    `js:"DITHER"`
-	DONT_CARE                                    int    `js:"DONT_CARE"`
-	DST_ALPHA                                    int    `js:"DST_ALPHA"`
-	DST_COLOR                                    int    `js:"DST_COLOR"`
-	DYNAMIC_DRAW                                 int    `js:"DYNAMIC_DRAW"`
-	ELEMENT_ARRAY_BUFFER                         int    `js:"ELEMENT_ARRAY_BUFFER"`
-	ELEMENT_ARRAY_BUFFER_BINDING                 int    `js:"ELEMENT_ARRAY_BUFFER_BINDING"`
-	EQUAL                                        int    `js:"EQUAL"`
-	FASTEST                                      int    `js:"FASTEST"`
-	FLOAT                                        int    `js:"FLOAT"`
-	FLOAT_MAT2                                   int    `js:"FLOAT_MAT2"`
-	FLOAT_MAT3                                   int    `js:"FLOAT_MAT3"`
-	FLOAT_MAT4                                   int    `js:"FLOAT_MAT4"`
-	FLOAT_VEC2                                   int    `js:"FLOAT_VEC2"`
-	FLOAT_VEC3                                   int    `js:"FLOAT_VEC3"`
-	FLOAT_VEC4                                   int    `js:"FLOAT_VEC4"`
-	FRAGMENT_SHADER                              int    `js:"FRAGMENT_SHADER"`
-	FRAMEBUFFER                                  int    `js:"FRAMEBUFFER"`
-	FRAMEBUFFER_ATTACHMENT_OBJECT_NAME           int    `js:"FRAMEBUFFER_ATTACHMENT_OBJECT_NAME"`
-	FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE           int    `js:"FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE"`
-	FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE int    `js:"FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE"`
-	FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL         int    `js:"FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL"`
-	FRAMEBUFFER_BINDING                          int    `js:"FRAMEBUFFER_BINDING"`
-	FRAMEBUFFER_COMPLETE                         int    `js:"FRAMEBUFFER_COMPLETE"`
-	FRAMEBUFFER_INCOMPLETE_ATTACHMENT            int    `js:"FRAMEBUFFER_INCOMPLETE_ATTACHMENT"`
-	FRAMEBUFFER_INCOMPLETE_DIMENSIONS            int    `js:"FRAMEBUFFER_INCOMPLETE_DIMENSIONS"`
-	FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT    int    `js:"FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"`
-	FRAMEBUFFER_UNSUPPORTED                      int    `js:"FRAMEBUFFER_UNSUPPORTED"`
-	FRONT                                        int    `js:"FRONT"`
-	FRONT_AND_BACK                               int    `js:"FRONT_AND_BACK"`
-	FRONT_FACE                                   int    `js:"FRONT_FACE"`
-	FUNC_ADD                                     int    `js:"FUNC_ADD"`
-	FUNC_REVERSE_SUBTRACT                        int    `js:"FUNC_REVERSE_SUBTRACT"`
-	FUNC_SUBTRACT                                int    `js:"FUNC_SUBTRACT"`
-	GENERATE_MIPMAP_HINT                         int    `js:"GENERATE_MIPMAP_HINT"`
-	GEQUAL                                       int    `js:"GEQUAL"`
-	GREATER                                      int    `js:"GREATER"`
-	GREEN_BITS                                   int    `js:"GREEN_BITS"`
-	HIGH_FLOAT                                   int    `js:"HIGH_FLOAT"`
-	HIGH_INT                                     int    `js:"HIGH_INT"`
-	INCR                                         int    `js:"INCR"`
-	INCR_WRAP                                    int    `js:"INCR_WRAP"`
-	INFO_LOG_LENGTH                              uint32 `js:"INFO_LOG_LENGTH"`
-	INT                                          int    `js:"INT"`
-	INT_VEC2                                     int    `js:"INT_VEC2"`
-	INT_VEC3                                     int    `js:"INT_VEC3"`
-	INT_VEC4                                     int    `js:"INT_VEC4"`
-	INVALID_ENUM                                 int    `js:"INVALID_ENUM"`
-	INVALID_FRAMEBUFFER_OPERATION                int    `js:"INVALID_FRAMEBUFFER_OPERATION"`
-	INVALID_OPERATION                            int    `js:"INVALID_OPERATION"`
-	INVALID_VALUE                                int    `js:"INVALID_VALUE"`
-	INVERT                                       int    `js:"INVERT"`
-	KEEP                                         int    `js:"KEEP"`
-	LEQUAL                                       int    `js:"LEQUAL"`
-	LESS                                         int    `js:"LESS"`
-	LINEAR                                       int    `js:"LINEAR"`
-	LINEAR_MIPMAP_LINEAR                         int    `js:"LINEAR_MIPMAP_LINEAR"`
-	LINEAR_MIPMAP_NEAREST                        int    `js:"LINEAR_MIPMAP_NEAREST"`
-	LINES                                        int    `js:"LINES"`
-	LINE_LOOP                                    int    `js:"LINE_LOOP"`
-	LINE_STRIP                                   int    `js:"LINE_STRIP"`
-	LINE_WIDTH                                   int    `js:"LINE_WIDTH"`
-	LINK_STATUS                                  int    `js:"LINK_STATUS"`
-	LOW_FLOAT                                    int    `js:"LOW_FLOAT"`
-	LOW_INT                                      int    `js:"LOW_INT"`
-	LUMINANCE                                    int    `js:"LUMINANCE"`
-	LUMINANCE_ALPHA                              int    `js:"LUMINANCE_ALPHA"`
-	MAX_COMBINED_TEXTURE_IMAGE_UNITS             int    `js:"MAX_COMBINED_TEXTURE_IMAGE_UNITS"`
-	MAX_CUBE_MAP_TEXTURE_SIZE                    int    `js:"MAX_CUBE_MAP_TEXTURE_SIZE"`
-	MAX_FRAGMENT_UNIFORM_VECTORS                 int    `js:"MAX_FRAGMENT_UNIFORM_VECTORS"`
-	MAX_RENDERBUFFER_SIZE                        int    `js:"MAX_RENDERBUFFER_SIZE"`
-	MAX_TEXTURE_IMAGE_UNITS                      int    `js:"MAX_TEXTURE_IMAGE_UNITS"`
-	MAX_TEXTURE_SIZE                             int    `js:"MAX_TEXTURE_SIZE"`
-	MAX_VARYING_VECTORS                          int    `js:"MAX_VARYING_VECTORS"`
-	MAX_VERTEX_ATTRIBS                           int    `js:"MAX_VERTEX_ATTRIBS"`
-	MAX_VERTEX_TEXTURE_IMAGE_UNITS               int    `js:"MAX_VERTEX_TEXTURE_IMAGE_UNITS"`
-	MAX_VERTEX_UNIFORM_VECTORS                   int    `js:"MAX_VERTEX_UNIFORM_VECTORS"`
-	MAX_VIEWPORT_DIMS                            int    `js:"MAX_VIEWPORT_DIMS"`
-	MEDIUM_FLOAT                                 int    `js:"MEDIUM_FLOAT"`
-	MEDIUM_INT                                   int    `js:"MEDIUM_INT"`
-	MIRRORED_REPEAT                              int    `js:"MIRRORED_REPEAT"`
-	MULTISAMPLE                                  int    `js:"MULTISAMPLE"`
-	NEAREST                                      int    `js:"NEAREST"`
-	NEAREST_MIPMAP_LINEAR                        int    `js:"NEAREST_MIPMAP_LINEAR"`
-	NEAREST_MIPMAP_NEAREST                       int    `js:"NEAREST_MIPMAP_NEAREST"`
-	NEVER                                        int    `js:"NEVER"`
-	NICEST                                       int    `js:"NICEST"`
-	NONE                                         int    `js:"NONE"`
-	NOTEQUAL                                     int    `js:"NOTEQUAL"`
-	NO_ERROR                                     int    `js:"NO_ERROR"`
-	NUM_COMPRESSED_TEXTURE_FORMATS               int    `js:"NUM_COMPRESSED_TEXTURE_FORMATS"`
-	ONE                                          int    `js:"ONE"`
-	ONE_MINUS_CONSTANT_ALPHA                     int    `js:"ONE_MINUS_CONSTANT_ALPHA"`
-	ONE_MINUS_CONSTANT_COLOR                     int    `js:"ONE_MINUS_CONSTANT_COLOR"`
-	ONE_MINUS_DST_ALPHA                          int    `js:"ONE_MINUS_DST_ALPHA"`
-	ONE_MINUS_DST_COLOR                          int    `js:"ONE_MINUS_DST_COLOR"`
-	ONE_MINUS_SRC_ALPHA                          int    `js:"ONE_MINUS_SRC_ALPHA"`
-	ONE_MINUS_SRC_COLOR                          int    `js:"ONE_MINUS_SRC_COLOR"`
-	OUT_OF_MEMORY                                int    `js:"OUT_OF_MEMORY"`
-	PACK_ALIGNMENT                               int    `js:"PACK_ALIGNMENT"`
-	POINTS                                       int    `js:"POINTS"`
-	POLYGON_OFFSET_FACTOR                        int    `js:"POLYGON_OFFSET_FACTOR"`
-	POLYGON_OFFSET_FILL                          int    `js:"POLYGON_OFFSET_FILL"`
-	POLYGON_OFFSET_UNITS                         int    `js:"POLYGON_OFFSET_UNITS"`
-	RED_BITS                                     int    `js:"RED_BITS"`
-	RENDERBUFFER                                 int    `js:"RENDERBUFFER"`
-	RENDERBUFFER_ALPHA_SIZE                      int    `js:"RENDERBUFFER_ALPHA_SIZE"`
-	RENDERBUFFER_BINDING                         int    `js:"RENDERBUFFER_BINDING"`
-	RENDERBUFFER_BLUE_SIZE                       int    `js:"RENDERBUFFER_BLUE_SIZE"`
-	RENDERBUFFER_DEPTH_SIZE                      int    `js:"RENDERBUFFER_DEPTH_SIZE"`
-	RENDERBUFFER_GREEN_SIZE                      int    `js:"RENDERBUFFER_GREEN_SIZE"`
-	RENDERBUFFER_HEIGHT                          int    `js:"RENDERBUFFER_HEIGHT"`
-	RENDERBUFFER_INTERNAL_FORMAT                 int    `js:"RENDERBUFFER_INTERNAL_FORMAT"`
-	RENDERBUFFER_RED_SIZE                        int    `js:"RENDERBUFFER_RED_SIZE"`
-	RENDERBUFFER_STENCIL_SIZE                    int    `js:"RENDERBUFFER_STENCIL_SIZE"`
-	RENDERBUFFER_WIDTH                           int    `js:"RENDERBUFFER_WIDTH"`
-	RENDERER                                     int    `js:"RENDERER"`
-	REPEAT                                       int    `js:"REPEAT"`
-	REPLACE                                      int    `js:"REPLACE"`
-	RGB                                          int    `js:"RGB"`
-	RGB5_A1                                      int    `js:"RGB5_A1"`
-	RGB565                                       int    `js:"RGB565"`
-	RGBA                                         int    `js:"RGBA"`
-	RGBA4                                        int    `js:"RGBA4"`
-	SAMPLER_2D                                   int    `js:"SAMPLER_2D"`
-	SAMPLER_CUBE                                 int    `js:"SAMPLER_CUBE"`
-	SAMPLES                                      int    `js:"SAMPLES"`
-	SAMPLE_ALPHA_TO_COVERAGE                     int    `js:"SAMPLE_ALPHA_TO_COVERAGE"`
-	SAMPLE_BUFFERS                               int    `js:"SAMPLE_BUFFERS"`
-	SAMPLE_COVERAGE                              int    `js:"SAMPLE_COVERAGE"`
-	SAMPLE_COVERAGE_INVERT                       int    `js:"SAMPLE_COVERAGE_INVERT"`
-	SAMPLE_COVERAGE_VALUE                        int    `js:"SAMPLE_COVERAGE_VALUE"`
-	SCISSOR_BOX                                  int    `js:"SCISSOR_BOX"`
-	SCISSOR_TEST                                 int    `js:"SCISSOR_TEST"`
-	SHADER_COMPILER                              int    `js:"SHADER_COMPILER"`
-	SHADER_SOURCE_LENGTH                         int    `js:"SHADER_SOURCE_LENGTH"`
-	SHADER_TYPE                                  int    `js:"SHADER_TYPE"`
-	SHADING_LANGUAGE_VERSION                     int    `js:"SHADING_LANGUAGE_VERSION"`
-	SHORT                                        int    `js:"SHORT"`
-	SRC_ALPHA                                    int    `js:"SRC_ALPHA"`
-	SRC_ALPHA_SATURATE                           int    `js:"SRC_ALPHA_SATURATE"`
-	SRC_COLOR                                    int    `js:"SRC_COLOR"`
-	STATIC_DRAW                                  int    `js:"STATIC_DRAW"`
-	STENCIL_ATTACHMENT                           int    `js:"STENCIL_ATTACHMENT"`
-	STENCIL_BACK_FAIL                            int    `js:"STENCIL_BACK_FAIL"`
-	STENCIL_BACK_FUNC                            int    `js:"STENCIL_BACK_FUNC"`
-	STENCIL_BACK_PASS_DEPTH_FAIL                 int    `js:"STENCIL_BACK_PASS_DEPTH_FAIL"`
-	STENCIL_BACK_PASS_DEPTH_PASS                 int    `js:"STENCIL_BACK_PASS_DEPTH_PASS"`
-	STENCIL_BACK_REF                             int    `js:"STENCIL_BACK_REF"`
-	STENCIL_BACK_VALUE_MASK                      int    `js:"STENCIL_BACK_VALUE_MASK"`
-	STENCIL_BACK_WRITEMASK                       int    `js:"STENCIL_BACK_WRITEMASK"`
-	STENCIL_BITS                                 int    `js:"STENCIL_BITS"`
-	STENCIL_BUFFER_BIT                           int    `js:"STENCIL_BUFFER_BIT"`
-	STENCIL_CLEAR_VALUE                          int    `js:"STENCIL_CLEAR_VALUE"`
-	STENCIL_FAIL                                 int    `js:"STENCIL_FAIL"`
-	STENCIL_FUNC                                 int    `js:"STENCIL_FUNC"`
-	STENCIL_INDEX                                int    `js:"STENCIL_INDEX"`
-	STENCIL_INDEX8                               int    `js:"STENCIL_INDEX8"`
-	STENCIL_PASS_DEPTH_FAIL                      int    `js:"STENCIL_PASS_DEPTH_FAIL"`
-	STENCIL_PASS_DEPTH_PASS                      int    `js:"STENCIL_PASS_DEPTH_PASS"`
-	STENCIL_REF                                  int    `js:"STENCIL_REF"`
-	STENCIL_TEST                                 int    `js:"STENCIL_TEST"`
-	STENCIL_VALUE_MASK                           int    `js:"STENCIL_VALUE_MASK"`
-	STENCIL_WRITEMASK                            int    `js:"STENCIL_WRITEMASK"`
-	STREAM_DRAW                                  int    `js:"STREAM_DRAW"`
-	SUBPIXEL_BITS                                int    `js:"SUBPIXEL_BITS"`
-	TEXTURE                                      int    `js:"TEXTURE"`
-	TEXTURE0                                     int    `js:"TEXTURE0"`
-	TEXTURE1                                     int    `js:"TEXTURE1"`
-	TEXTURE2                                     int    `js:"TEXTURE2"`
-	TEXTURE3                                     int    `js:"TEXTURE3"`
-	TEXTURE4                                     int    `js:"TEXTURE4"`
-	TEXTURE5                                     int    `js:"TEXTURE5"`
-	TEXTURE6                                     int    `js:"TEXTURE6"`
-	TEXTURE7                                     int    `js:"TEXTURE7"`
-	TEXTURE8                                     int    `js:"TEXTURE8"`
-	TEXTURE9                                     int    `js:"TEXTURE9"`
-	TEXTURE10                                    int    `js:"TEXTURE10"`
-	TEXTURE11                                    int    `js:"TEXTURE11"`
-	TEXTURE12                                    int    `js:"TEXTURE12"`
-	TEXTURE13                                    int    `js:"TEXTURE13"`
-	TEXTURE14                                    int    `js:"TEXTURE14"`
-	TEXTURE15                                    int    `js:"TEXTURE15"`
-	TEXTURE16                                    int    `js:"TEXTURE16"`
-	TEXTURE17                                    int    `js:"TEXTURE17"`
-	TEXTURE18                                    int    `js:"TEXTURE18"`
-	TEXTURE19                                    int    `js:"TEXTURE19"`
-	TEXTURE20                                    int    `js:"TEXTURE20"`
-	TEXTURE21                                    int    `js:"TEXTURE21"`
-	TEXTURE22                                    int    `js:"TEXTURE22"`
-	TEXTURE23                                    int    `js:"TEXTURE23"`
-	TEXTURE24                                    int    `js:"TEXTURE24"`
-	TEXTURE25                                    int    `js:"TEXTURE25"`
-	TEXTURE26                                    int    `js:"TEXTURE26"`
-	TEXTURE27                                    int    `js:"TEXTURE27"`
-	TEXTURE28                                    int    `js:"TEXTURE28"`
-	TEXTURE29                                    int    `js:"TEXTURE29"`
-	TEXTURE30                                    int    `js:"TEXTURE30"`
-	TEXTURE31                                    int    `js:"TEXTURE31"`
-	TEXTURE_2D                                   int    `js:"TEXTURE_2D"`
-	TEXTURE_BINDING_2D                           int    `js:"TEXTURE_BINDING_2D"`
-	TEXTURE_BINDING_CUBE_MAP                     int    `js:"TEXTURE_BINDING_CUBE_MAP"`
-	TEXTURE_CUBE_MAP                             int    `js:"TEXTURE_CUBE_MAP"`
-	TEXTURE_CUBE_MAP_NEGATIVE_X                  int    `js:"TEXTURE_CUBE_MAP_NEGATIVE_X"`
-	TEXTURE_CUBE_MAP_NEGATIVE_Y                  int    `js:"TEXTURE_CUBE_MAP_NEGATIVE_Y"`
-	TEXTURE_CUBE_MAP_NEGATIVE_Z                  int    `js:"TEXTURE_CUBE_MAP_NEGATIVE_Z"`
-	TEXTURE_CUBE_MAP_POSITIVE_X                  int    `js:"TEXTURE_CUBE_MAP_POSITIVE_X"`
-	TEXTURE_CUBE_MAP_POSITIVE_Y                  int    `js:"TEXTURE_CUBE_MAP_POSITIVE_Y"`
-	TEXTURE_CUBE_MAP_POSITIVE_Z                  int    `js:"TEXTURE_CUBE_MAP_POSITIVE_Z"`
-	TEXTURE_MAG_FILTER                           int    `js:"TEXTURE_MAG_FILTER"`
-	TEXTURE_MIN_FILTER                           int    `js:"TEXTURE_MIN_FILTER"`
-	TEXTURE_WRAP_S                               int    `js:"TEXTURE_WRAP_S"`
-	TEXTURE_WRAP_T                               int    `js:"TEXTURE_WRAP_T"`
-	TRIANGLES                                    int    `js:"TRIANGLES"`
-	TRIANGLE_FAN                                 int    `js:"TRIANGLE_FAN"`
-	TRIANGLE_STRIP                               int    `js:"TRIANGLE_STRIP"`
-	UNPACK_ALIGNMENT                             int    `js:"UNPACK_ALIGNMENT"`
-	UNPACK_COLORSPACE_CONVERSION_WEBGL           int    `js:"UNPACK_COLORSPACE_CONVERSION_WEBGL"`
-	UNPACK_FLIP_Y_WEBGL                          int    `js:"UNPACK_FLIP_Y_WEBGL"`
-	UNPACK_PREMULTIPLY_ALPHA_WEBGL               int    `js:"UNPACK_PREMULTIPLY_ALPHA_WEBGL"`
-	UNSIGNED_BYTE                                int    `js:"UNSIGNED_BYTE"`
-	UNSIGNED_INT                                 int    `js:"UNSIGNED_INT"`
-	UNSIGNED_SHORT                               int    `js:"UNSIGNED_SHORT"`
-	UNSIGNED_SHORT_4_4_4_4                       int    `js:"UNSIGNED_SHORT_4_4_4_4"`
-	UNSIGNED_SHORT_5_5_5_1                       int    `js:"UNSIGNED_SHORT_5_5_5_1"`
-	UNSIGNED_SHORT_5_6_5                         int    `js:"UNSIGNED_SHORT_5_6_5"`
-	VALIDATE_STATUS                              int    `js:"VALIDATE_STATUS"`
-	VENDOR                                       int    `js:"VENDOR"`
-	VERSION                                      int    `js:"VERSION"`
-	VERTEX_ATTRIB_ARRAY_BUFFER_BINDING           int    `js:"VERTEX_ATTRIB_ARRAY_BUFFER_BINDING"`
-	VERTEX_ATTRIB_ARRAY_ENABLED                  int    `js:"VERTEX_ATTRIB_ARRAY_ENABLED"`
-	VERTEX_ATTRIB_ARRAY_NORMALIZED               int    `js:"VERTEX_ATTRIB_ARRAY_NORMALIZED"`
-	VERTEX_ATTRIB_ARRAY_POINTER                  int    `js:"VERTEX_ATTRIB_ARRAY_POINTER"`
-	VERTEX_ATTRIB_ARRAY_SIZE                     int    `js:"VERTEX_ATTRIB_ARRAY_SIZE"`
-	VERTEX_ATTRIB_ARRAY_STRIDE                   int    `js:"VERTEX_ATTRIB_ARRAY_STRIDE"`
-	VERTEX_ATTRIB_ARRAY_TYPE                     int    `js:"VERTEX_ATTRIB_ARRAY_TYPE"`
-	VERTEX_SHADER                                int    `js:"VERTEX_SHADER"`
-	VIEWPORT                                     int    `js:"VIEWPORT"`
-	ZERO                                         int    `js:"ZERO"`
-	TRUE                                         int    `js:"TRUE"`
+	js.Value
+	ARRAY_BUFFER                                 int
+	ARRAY_BUFFER_BINDING                         int
+	ATTACHED_SHADERS                             int
+	BACK                                         int
+	BLEND                                        int
+	BLEND_COLOR                                  int
+	BLEND_DST_ALPHA                              int
+	BLEND_DST_RGB                                int
+	BLEND_EQUATION                               int
+	BLEND_EQUATION_ALPHA                         int
+	BLEND_EQUATION_RGB                           int
+	BLEND_SRC_ALPHA                              int
+	BLEND_SRC_RGB                                int
+	BLUE_BITS                                    int
+	BOOL                                         int
+	BOOL_VEC2                                    int
+	BOOL_VEC3                                    int
+	BOOL_VEC4                                    int
+	BROWSER_DEFAULT_WEBGL                        int
+	BUFFER_SIZE                                  int
+	BUFFER_USAGE                                 int
+	BYTE                                         int
+	CCW                                          int
+	CLAMP_TO_EDGE                                int
+	CLAMP_TO_BORDER                              int // not supported! Defaults to CLAMP_TO_EDGE!
+	COLOR_ATTACHMENT0                            int
+	COLOR_BUFFER_BIT                             int
+	COLOR_CLEAR_VALUE                            int
+	COLOR_WRITEMASK                              int
+	COMPILE_STATUS                               uint32
+	COMPRESSED_TEXTURE_FORMATS                   int
+	CONSTANT_ALPHA                               int
+	CONSTANT_COLOR                               int
+	CONTEXT_LOST_WEBGL                           int
+	CULL_FACE                                    int
+	CULL_FACE_MODE                               int
+	CURRENT_PROGRAM                              int
+	CURRENT_VERTEX_ATTRIB                        int
+	CW                                           int
+	DECR                                         int
+	DECR_WRAP                                    int
+	DELETE_STATUS                                int
+	DEPTH_ATTACHMENT                             int
+	DEPTH_BITS                                   int
+	DEPTH_BUFFER_BIT                             int
+	DEPTH_CLEAR_VALUE                            int
+	DEPTH_COMPONENT                              int
+	DEPTH_COMPONENT16                            int
+	DEPTH_FUNC                                   int
+	DEPTH_RANGE                                  int
+	DEPTH_STENCIL                                int
+	DEPTH_STENCIL_ATTACHMENT                     int
+	DEPTH_TEST                                   int
+	DEPTH_WRITEMASK                              int
+	DITHER                                       int
+	DONT_CARE                                    int
+	DST_ALPHA                                    int
+	DST_COLOR                                    int
+	DYNAMIC_DRAW                                 int
+	ELEMENT_ARRAY_BUFFER                         int
+	ELEMENT_ARRAY_BUFFER_BINDING                 int
+	EQUAL                                        int
+	FASTEST                                      int
+	FLOAT                                        int
+	FLOAT_MAT2                                   int
+	FLOAT_MAT3                                   int
+	FLOAT_MAT4                                   int
+	FLOAT_VEC2                                   int
+	FLOAT_VEC3                                   int
+	FLOAT_VEC4                                   int
+	FRAGMENT_SHADER                              int
+	FRAMEBUFFER                                  int
+	FRAMEBUFFER_ATTACHMENT_OBJECT_NAME           int
+	FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE           int
+	FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE int
+	FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL         int
+	FRAMEBUFFER_BINDING                          int
+	FRAMEBUFFER_COMPLETE                         int
+	FRAMEBUFFER_INCOMPLETE_ATTACHMENT            int
+	FRAMEBUFFER_INCOMPLETE_DIMENSIONS            int
+	FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT    int
+	FRAMEBUFFER_UNSUPPORTED                      int
+	FRONT                                        int
+	FRONT_AND_BACK                               int
+	FRONT_FACE                                   int
+	FUNC_ADD                                     int
+	FUNC_REVERSE_SUBTRACT                        int
+	FUNC_SUBTRACT                                int
+	GENERATE_MIPMAP_HINT                         int
+	GEQUAL                                       int
+	GREATER                                      int
+	GREEN_BITS                                   int
+	HIGH_FLOAT                                   int
+	HIGH_INT                                     int
+	INCR                                         int
+	INCR_WRAP                                    int
+	INFO_LOG_LENGTH                              uint32 //not supported!
+	INT                                          int
+	INT_VEC2                                     int
+	INT_VEC3                                     int
+	INT_VEC4                                     int
+	INVALID_ENUM                                 int
+	INVALID_FRAMEBUFFER_OPERATION                int
+	INVALID_OPERATION                            int
+	INVALID_VALUE                                int
+	INVERT                                       int
+	KEEP                                         int
+	LEQUAL                                       int
+	LESS                                         int
+	LINEAR                                       int
+	LINEAR_MIPMAP_LINEAR                         int
+	LINEAR_MIPMAP_NEAREST                        int
+	LINES                                        int
+	LINE_LOOP                                    int
+	LINE_STRIP                                   int
+	LINE_WIDTH                                   int
+	LINK_STATUS                                  int
+	LOW_FLOAT                                    int
+	LOW_INT                                      int
+	LUMINANCE                                    int
+	LUMINANCE_ALPHA                              int
+	MAX_COMBINED_TEXTURE_IMAGE_UNITS             int
+	MAX_CUBE_MAP_TEXTURE_SIZE                    int
+	MAX_FRAGMENT_UNIFORM_VECTORS                 int
+	MAX_RENDERBUFFER_SIZE                        int
+	MAX_TEXTURE_IMAGE_UNITS                      int
+	MAX_TEXTURE_SIZE                             int
+	MAX_VARYING_VECTORS                          int
+	MAX_VERTEX_ATTRIBS                           int
+	MAX_VERTEX_TEXTURE_IMAGE_UNITS               int
+	MAX_VERTEX_UNIFORM_VECTORS                   int
+	MAX_VIEWPORT_DIMS                            int
+	MEDIUM_FLOAT                                 int
+	MEDIUM_INT                                   int
+	MIRRORED_REPEAT                              int
+	MULTISAMPLE                                  int // not supported!
+	NEAREST                                      int
+	NEAREST_MIPMAP_LINEAR                        int
+	NEAREST_MIPMAP_NEAREST                       int
+	NEVER                                        int
+	NICEST                                       int
+	NONE                                         int
+	NOTEQUAL                                     int
+	NO_ERROR                                     int
+	NUM_COMPRESSED_TEXTURE_FORMATS               int // not supported!
+	ONE                                          int
+	ONE_MINUS_CONSTANT_ALPHA                     int
+	ONE_MINUS_CONSTANT_COLOR                     int
+	ONE_MINUS_DST_ALPHA                          int
+	ONE_MINUS_DST_COLOR                          int
+	ONE_MINUS_SRC_ALPHA                          int
+	ONE_MINUS_SRC_COLOR                          int
+	OUT_OF_MEMORY                                int
+	PACK_ALIGNMENT                               int
+	POINTS                                       int
+	POLYGON_OFFSET_FACTOR                        int
+	POLYGON_OFFSET_FILL                          int
+	POLYGON_OFFSET_UNITS                         int
+	RED_BITS                                     int
+	RENDERBUFFER                                 int
+	RENDERBUFFER_ALPHA_SIZE                      int
+	RENDERBUFFER_BINDING                         int
+	RENDERBUFFER_BLUE_SIZE                       int
+	RENDERBUFFER_DEPTH_SIZE                      int
+	RENDERBUFFER_GREEN_SIZE                      int
+	RENDERBUFFER_HEIGHT                          int
+	RENDERBUFFER_INTERNAL_FORMAT                 int
+	RENDERBUFFER_RED_SIZE                        int
+	RENDERBUFFER_STENCIL_SIZE                    int
+	RENDERBUFFER_WIDTH                           int
+	RENDERER                                     int
+	REPEAT                                       int
+	REPLACE                                      int
+	RGB                                          int
+	RGB5_A1                                      int
+	RGB565                                       int
+	RGBA                                         int
+	RGBA4                                        int
+	SAMPLER_2D                                   int
+	SAMPLER_CUBE                                 int
+	SAMPLES                                      int
+	SAMPLE_ALPHA_TO_COVERAGE                     int
+	SAMPLE_BUFFERS                               int
+	SAMPLE_COVERAGE                              int
+	SAMPLE_COVERAGE_INVERT                       int
+	SAMPLE_COVERAGE_VALUE                        int
+	SCISSOR_BOX                                  int
+	SCISSOR_TEST                                 int
+	SHADER_COMPILER                              int // not supported!
+	SHADER_SOURCE_LENGTH                         int // not supported!
+	SHADER_TYPE                                  int
+	SHADING_LANGUAGE_VERSION                     int
+	SHORT                                        int
+	SRC_ALPHA                                    int
+	SRC_ALPHA_SATURATE                           int
+	SRC_COLOR                                    int
+	STATIC_DRAW                                  int
+	STENCIL_ATTACHMENT                           int
+	STENCIL_BACK_FAIL                            int
+	STENCIL_BACK_FUNC                            int
+	STENCIL_BACK_PASS_DEPTH_FAIL                 int
+	STENCIL_BACK_PASS_DEPTH_PASS                 int
+	STENCIL_BACK_REF                             int
+	STENCIL_BACK_VALUE_MASK                      int
+	STENCIL_BACK_WRITEMASK                       int
+	STENCIL_BITS                                 int
+	STENCIL_BUFFER_BIT                           int
+	STENCIL_CLEAR_VALUE                          int
+	STENCIL_FAIL                                 int
+	STENCIL_FUNC                                 int
+	STENCIL_INDEX                                int
+	STENCIL_INDEX8                               int
+	STENCIL_PASS_DEPTH_FAIL                      int
+	STENCIL_PASS_DEPTH_PASS                      int
+	STENCIL_REF                                  int
+	STENCIL_TEST                                 int
+	STENCIL_VALUE_MASK                           int
+	STENCIL_WRITEMASK                            int
+	STREAM_DRAW                                  int
+	SUBPIXEL_BITS                                int
+	TEXTURE                                      int
+	TEXTURE0                                     int
+	TEXTURE1                                     int
+	TEXTURE2                                     int
+	TEXTURE3                                     int
+	TEXTURE4                                     int
+	TEXTURE5                                     int
+	TEXTURE6                                     int
+	TEXTURE7                                     int
+	TEXTURE8                                     int
+	TEXTURE9                                     int
+	TEXTURE10                                    int
+	TEXTURE11                                    int
+	TEXTURE12                                    int
+	TEXTURE13                                    int
+	TEXTURE14                                    int
+	TEXTURE15                                    int
+	TEXTURE16                                    int
+	TEXTURE17                                    int
+	TEXTURE18                                    int
+	TEXTURE19                                    int
+	TEXTURE20                                    int
+	TEXTURE21                                    int
+	TEXTURE22                                    int
+	TEXTURE23                                    int
+	TEXTURE24                                    int
+	TEXTURE25                                    int
+	TEXTURE26                                    int
+	TEXTURE27                                    int
+	TEXTURE28                                    int
+	TEXTURE29                                    int
+	TEXTURE30                                    int
+	TEXTURE31                                    int
+	TEXTURE_2D                                   int
+	TEXTURE_BINDING_2D                           int
+	TEXTURE_BINDING_CUBE_MAP                     int
+	TEXTURE_CUBE_MAP                             int
+	TEXTURE_CUBE_MAP_NEGATIVE_X                  int
+	TEXTURE_CUBE_MAP_NEGATIVE_Y                  int
+	TEXTURE_CUBE_MAP_NEGATIVE_Z                  int
+	TEXTURE_CUBE_MAP_POSITIVE_X                  int
+	TEXTURE_CUBE_MAP_POSITIVE_Y                  int
+	TEXTURE_CUBE_MAP_POSITIVE_Z                  int
+	TEXTURE_MAG_FILTER                           int
+	TEXTURE_MIN_FILTER                           int
+	TEXTURE_WRAP_S                               int
+	TEXTURE_WRAP_T                               int
+	TRIANGLES                                    int
+	TRIANGLE_FAN                                 int
+	TRIANGLE_STRIP                               int
+	UNPACK_ALIGNMENT                             int
+	UNPACK_COLORSPACE_CONVERSION_WEBGL           int
+	UNPACK_FLIP_Y_WEBGL                          int
+	UNPACK_PREMULTIPLY_ALPHA_WEBGL               int
+	UNSIGNED_BYTE                                int
+	UNSIGNED_INT                                 int
+	UNSIGNED_SHORT                               int
+	UNSIGNED_SHORT_4_4_4_4                       int
+	UNSIGNED_SHORT_5_5_5_1                       int
+	UNSIGNED_SHORT_5_6_5                         int
+	VALIDATE_STATUS                              int
+	VENDOR                                       int // not supported!
+	VERSION                                      int
+	VERTEX_ATTRIB_ARRAY_BUFFER_BINDING           int
+	VERTEX_ATTRIB_ARRAY_ENABLED                  int
+	VERTEX_ATTRIB_ARRAY_NORMALIZED               int
+	VERTEX_ATTRIB_ARRAY_POINTER                  int
+	VERTEX_ATTRIB_ARRAY_SIZE                     int
+	VERTEX_ATTRIB_ARRAY_STRIDE                   int
+	VERTEX_ATTRIB_ARRAY_TYPE                     int
+	VERTEX_SHADER                                int
+	VIEWPORT                                     int
+	ZERO                                         int
+	TRUE                                         int
 }
 
 // NewContext takes an HTML5 canvas object and optional context attributes.
 // If an error is returned it means you won't have access to WebGL
 // functionality.
-func NewContext(canvas *js.Object, ca *ContextAttributes) (*Context, error) {
-	if js.Global.Get("WebGLRenderingContext") == js.Undefined {
+func NewContext(canvas js.Value, ca *ContextAttributes) (*Context, error) {
+	if js.Global().Get("WebGLRenderingContext").Type() == js.TypeUndefined {
 		return nil, errors.New("Your browser doesn't appear to support webgl.")
 	}
+
+	ctx := new(Context)
+	ctx.InitialContextValues()
 
 	if ca == nil {
 		ca = DefaultAttributes()
 	}
 
-	attrs := map[string]bool{
-		"alpha":                 ca.Alpha,
-		"depth":                 ca.Depth,
-		"stencil":               ca.Stencil,
-		"antialias":             ca.Antialias,
-		"premultipliedAlpha":    ca.PremultipliedAlpha,
-		"preserveDrawingBuffer": ca.PreserveDrawingBuffer,
-	}
+	attrs := js.Global().Get("Object").New()
+	attrs.Set("alpha", ca.Alpha)
+	attrs.Set("depth", ca.Depth)
+	attrs.Set("stencil", ca.Stencil)
+	attrs.Set("antialias", ca.Antialias)
+	attrs.Set("premultipliedAlpha", ca.PremultipliedAlpha)
+	attrs.Set("preserveDrawingBuffer", ca.PreserveDrawingBuffer)
 	gl := canvas.Call("getContext", "webgl", attrs)
-	if gl == nil {
+	if gl.Type() == js.TypeNull {
 		gl = canvas.Call("getContext", "experimental-webgl", attrs)
-		if gl == nil {
+		if gl.Type() == js.TypeNull {
 			return nil, errors.New("Creating a webgl context has failed.")
 		}
 	}
-	ctx := new(Context)
-	ctx.Object = gl
+	ctx.Value = gl
 	return ctx, nil
+}
+
+// InitialContextValues sets up the context by retrieving the values from the
+// webgl context
+func (c *Context) InitialContextValues() {
+	webCtx := js.Global().Get("WebGLRenderingContext").Get("prototype")
+	c.ARRAY_BUFFER = webCtx.Get("ARRAY_BUFFER").Int()
+	c.ARRAY_BUFFER_BINDING = webCtx.Get("ARRAY_BUFFER_BINDING").Int()
+	c.ATTACHED_SHADERS = webCtx.Get("ATTACHED_SHADERS").Int()
+	c.BACK = webCtx.Get("BACK").Int()
+	c.BLEND = webCtx.Get("BLEND").Int()
+	c.BLEND_COLOR = webCtx.Get("BLEND_COLOR").Int()
+	c.BLEND_DST_ALPHA = webCtx.Get("BLEND_DST_ALPHA").Int()
+	c.BLEND_DST_RGB = webCtx.Get("BLEND_DST_RGB").Int()
+	c.BLEND_EQUATION = webCtx.Get("BLEND_EQUATION").Int()
+	c.BLEND_EQUATION_ALPHA = webCtx.Get("BLEND_EQUATION_ALPHA").Int()
+	c.BLEND_EQUATION_RGB = webCtx.Get("BLEND_EQUATION_RGB").Int()
+	c.BLEND_SRC_ALPHA = webCtx.Get("BLEND_SRC_ALPHA").Int()
+	c.BLEND_SRC_RGB = webCtx.Get("BLEND_SRC_RGB").Int()
+	c.BLUE_BITS = webCtx.Get("BLUE_BITS").Int()
+	c.BOOL = webCtx.Get("BOOL").Int()
+	c.BOOL_VEC2 = webCtx.Get("BOOL_VEC2").Int()
+	c.BOOL_VEC3 = webCtx.Get("BOOL_VEC3").Int()
+	c.BOOL_VEC4 = webCtx.Get("BOOL_VEC4").Int()
+	c.BROWSER_DEFAULT_WEBGL = webCtx.Get("BROWSER_DEFAULT_WEBGL").Int()
+	c.BUFFER_SIZE = webCtx.Get("BUFFER_SIZE").Int()
+	c.BUFFER_USAGE = webCtx.Get("BUFFER_USAGE").Int()
+	c.BYTE = webCtx.Get("BYTE").Int()
+	c.CCW = webCtx.Get("CCW").Int()
+	c.CLAMP_TO_EDGE = webCtx.Get("CLAMP_TO_EDGE").Int()
+	c.CLAMP_TO_BORDER = webCtx.Get("CLAMP_TO_EDGE").Int()
+	c.COLOR_ATTACHMENT0 = webCtx.Get("COLOR_ATTACHMENT0").Int()
+	c.COLOR_BUFFER_BIT = webCtx.Get("COLOR_BUFFER_BIT").Int()
+	c.COLOR_CLEAR_VALUE = webCtx.Get("COLOR_CLEAR_VALUE").Int()
+	c.COLOR_WRITEMASK = webCtx.Get("COLOR_WRITEMASK").Int()
+	c.COMPILE_STATUS = uint32(webCtx.Get("COMPILE_STATUS").Int())
+	c.COMPRESSED_TEXTURE_FORMATS = webCtx.Get("COMPRESSED_TEXTURE_FORMATS").Int()
+	c.CONSTANT_ALPHA = webCtx.Get("CONSTANT_ALPHA").Int()
+	c.CONSTANT_COLOR = webCtx.Get("CONSTANT_COLOR").Int()
+	c.CONTEXT_LOST_WEBGL = webCtx.Get("CONTEXT_LOST_WEBGL").Int()
+	c.CULL_FACE = webCtx.Get("CULL_FACE").Int()
+	c.CULL_FACE_MODE = webCtx.Get("CULL_FACE_MODE").Int()
+	c.CURRENT_PROGRAM = webCtx.Get("CURRENT_PROGRAM").Int()
+	c.CURRENT_VERTEX_ATTRIB = webCtx.Get("CURRENT_VERTEX_ATTRIB").Int()
+	c.CW = webCtx.Get("CW").Int()
+	c.DECR = webCtx.Get("DECR").Int()
+	c.DECR_WRAP = webCtx.Get("DECR_WRAP").Int()
+	c.DELETE_STATUS = webCtx.Get("DELETE_STATUS").Int()
+	c.DEPTH_ATTACHMENT = webCtx.Get("DEPTH_ATTACHMENT").Int()
+	c.DEPTH_BITS = webCtx.Get("DEPTH_BITS").Int()
+	c.DEPTH_BUFFER_BIT = webCtx.Get("DEPTH_BUFFER_BIT").Int()
+	c.DEPTH_CLEAR_VALUE = webCtx.Get("DEPTH_CLEAR_VALUE").Int()
+	c.DEPTH_COMPONENT = webCtx.Get("DEPTH_COMPONENT").Int()
+	c.DEPTH_COMPONENT16 = webCtx.Get("DEPTH_COMPONENT16").Int()
+	c.DEPTH_FUNC = webCtx.Get("DEPTH_FUNC").Int()
+	c.DEPTH_RANGE = webCtx.Get("DEPTH_RANGE").Int()
+	c.DEPTH_STENCIL = webCtx.Get("DEPTH_STENCIL").Int()
+	c.DEPTH_STENCIL_ATTACHMENT = webCtx.Get("DEPTH_STENCIL_ATTACHMENT").Int()
+	c.DEPTH_TEST = webCtx.Get("DEPTH_TEST").Int()
+	c.DEPTH_WRITEMASK = webCtx.Get("DEPTH_WRITEMASK").Int()
+	c.DITHER = webCtx.Get("DITHER").Int()
+	c.DONT_CARE = webCtx.Get("DONT_CARE").Int()
+	c.DST_ALPHA = webCtx.Get("DST_ALPHA").Int()
+	c.DST_COLOR = webCtx.Get("DST_COLOR").Int()
+	c.DYNAMIC_DRAW = webCtx.Get("DYNAMIC_DRAW").Int()
+	c.ELEMENT_ARRAY_BUFFER = webCtx.Get("ELEMENT_ARRAY_BUFFER").Int()
+	c.ELEMENT_ARRAY_BUFFER_BINDING = webCtx.Get("ELEMENT_ARRAY_BUFFER_BINDING").Int()
+	c.EQUAL = webCtx.Get("EQUAL").Int()
+	c.FASTEST = webCtx.Get("FASTEST").Int()
+	c.FLOAT = webCtx.Get("FLOAT").Int()
+	c.FLOAT_MAT2 = webCtx.Get("FLOAT_MAT2").Int()
+	c.FLOAT_MAT3 = webCtx.Get("FLOAT_MAT3").Int()
+	c.FLOAT_MAT4 = webCtx.Get("FLOAT_MAT4").Int()
+	c.FLOAT_VEC2 = webCtx.Get("FLOAT_VEC2").Int()
+	c.FLOAT_VEC3 = webCtx.Get("FLOAT_VEC3").Int()
+	c.FLOAT_VEC4 = webCtx.Get("FLOAT_VEC4").Int()
+	c.FRAGMENT_SHADER = webCtx.Get("FRAGMENT_SHADER").Int()
+	c.FRAMEBUFFER = webCtx.Get("FRAMEBUFFER").Int()
+	c.FRAMEBUFFER_ATTACHMENT_OBJECT_NAME = webCtx.Get("FRAMEBUFFER_ATTACHMENT_OBJECT_NAME").Int()
+	c.FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE = webCtx.Get("FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE").Int()
+	c.FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = webCtx.Get("FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE").Int()
+	c.FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = webCtx.Get("FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL").Int()
+	c.FRAMEBUFFER_BINDING = webCtx.Get("FRAMEBUFFER_BINDING").Int()
+	c.FRAMEBUFFER_COMPLETE = webCtx.Get("FRAMEBUFFER_COMPLETE").Int()
+	c.FRAMEBUFFER_INCOMPLETE_ATTACHMENT = webCtx.Get("FRAMEBUFFER_INCOMPLETE_ATTACHMENT").Int()
+	c.FRAMEBUFFER_INCOMPLETE_DIMENSIONS = webCtx.Get("FRAMEBUFFER_INCOMPLETE_DIMENSIONS").Int()
+	c.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = webCtx.Get("FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT").Int()
+	c.FRAMEBUFFER_UNSUPPORTED = webCtx.Get("FRAMEBUFFER_UNSUPPORTED").Int()
+	c.FRONT = webCtx.Get("FRONT").Int()
+	c.FRONT_AND_BACK = webCtx.Get("FRONT_AND_BACK").Int()
+	c.FRONT_FACE = webCtx.Get("FRONT_FACE").Int()
+	c.FUNC_ADD = webCtx.Get("FUNC_ADD").Int()
+	c.FUNC_REVERSE_SUBTRACT = webCtx.Get("FUNC_REVERSE_SUBTRACT").Int()
+	c.FUNC_SUBTRACT = webCtx.Get("FUNC_SUBTRACT").Int()
+	c.GENERATE_MIPMAP_HINT = webCtx.Get("GENERATE_MIPMAP_HINT").Int()
+	c.GEQUAL = webCtx.Get("GEQUAL").Int()
+	c.GREATER = webCtx.Get("GREATER").Int()
+	c.GREEN_BITS = webCtx.Get("GREEN_BITS").Int()
+	c.HIGH_FLOAT = webCtx.Get("HIGH_FLOAT").Int()
+	c.HIGH_INT = webCtx.Get("HIGH_INT").Int()
+	c.INCR = webCtx.Get("INCR").Int()
+	c.INCR_WRAP = webCtx.Get("INCR_WRAP").Int()
+	c.INFO_LOG_LENGTH = uint32(0)
+	c.INT = webCtx.Get("INT").Int()
+	c.INT_VEC2 = webCtx.Get("INT_VEC2").Int()
+	c.INT_VEC3 = webCtx.Get("INT_VEC3").Int()
+	c.INT_VEC4 = webCtx.Get("INT_VEC4").Int()
+	c.INVALID_ENUM = webCtx.Get("INVALID_ENUM").Int()
+	c.INVALID_FRAMEBUFFER_OPERATION = webCtx.Get("INVALID_FRAMEBUFFER_OPERATION").Int()
+	c.INVALID_OPERATION = webCtx.Get("INVALID_OPERATION").Int()
+	c.INVALID_VALUE = webCtx.Get("INVALID_VALUE").Int()
+	c.INVERT = webCtx.Get("INVERT").Int()
+	c.KEEP = webCtx.Get("KEEP").Int()
+	c.LEQUAL = webCtx.Get("LEQUAL").Int()
+	c.LESS = webCtx.Get("LESS").Int()
+	c.LINEAR = webCtx.Get("LINEAR").Int()
+	c.LINEAR_MIPMAP_LINEAR = webCtx.Get("LINEAR_MIPMAP_LINEAR").Int()
+	c.LINEAR_MIPMAP_NEAREST = webCtx.Get("LINEAR_MIPMAP_NEAREST").Int()
+	c.LINES = webCtx.Get("LINES").Int()
+	c.LINE_LOOP = webCtx.Get("LINE_LOOP").Int()
+	c.LINE_STRIP = webCtx.Get("LINE_STRIP").Int()
+	c.LINE_WIDTH = webCtx.Get("LINE_WIDTH").Int()
+	c.LINK_STATUS = webCtx.Get("LINK_STATUS").Int()
+	c.LOW_FLOAT = webCtx.Get("LOW_FLOAT").Int()
+	c.LOW_INT = webCtx.Get("LOW_INT").Int()
+	c.LUMINANCE = webCtx.Get("LUMINANCE").Int()
+	c.LUMINANCE_ALPHA = webCtx.Get("LUMINANCE_ALPHA").Int()
+	c.MAX_COMBINED_TEXTURE_IMAGE_UNITS = webCtx.Get("MAX_COMBINED_TEXTURE_IMAGE_UNITS").Int()
+	c.MAX_CUBE_MAP_TEXTURE_SIZE = webCtx.Get("MAX_CUBE_MAP_TEXTURE_SIZE").Int()
+	c.MAX_FRAGMENT_UNIFORM_VECTORS = webCtx.Get("MAX_FRAGMENT_UNIFORM_VECTORS").Int()
+	c.MAX_RENDERBUFFER_SIZE = webCtx.Get("MAX_RENDERBUFFER_SIZE").Int()
+	c.MAX_TEXTURE_IMAGE_UNITS = webCtx.Get("MAX_TEXTURE_IMAGE_UNITS").Int()
+	c.MAX_TEXTURE_SIZE = webCtx.Get("MAX_TEXTURE_SIZE").Int()
+	c.MAX_VARYING_VECTORS = webCtx.Get("MAX_VARYING_VECTORS").Int()
+	c.MAX_VERTEX_ATTRIBS = webCtx.Get("MAX_VERTEX_ATTRIBS").Int()
+	c.MAX_VERTEX_TEXTURE_IMAGE_UNITS = webCtx.Get("MAX_VERTEX_TEXTURE_IMAGE_UNITS").Int()
+	c.MAX_VERTEX_UNIFORM_VECTORS = webCtx.Get("MAX_VERTEX_UNIFORM_VECTORS").Int()
+	c.MAX_VIEWPORT_DIMS = webCtx.Get("MAX_VIEWPORT_DIMS").Int()
+	c.MEDIUM_FLOAT = webCtx.Get("MEDIUM_FLOAT").Int()
+	c.MEDIUM_INT = webCtx.Get("MEDIUM_INT").Int()
+	c.MIRRORED_REPEAT = webCtx.Get("MIRRORED_REPEAT").Int()
+	c.MULTISAMPLE = 0
+	c.NEAREST = webCtx.Get("NEAREST").Int()
+	c.NEAREST_MIPMAP_LINEAR = webCtx.Get("NEAREST_MIPMAP_LINEAR").Int()
+	c.NEAREST_MIPMAP_NEAREST = webCtx.Get("NEAREST_MIPMAP_NEAREST").Int()
+	c.NEVER = webCtx.Get("NEVER").Int()
+	c.NICEST = webCtx.Get("NICEST").Int()
+	c.NONE = webCtx.Get("NONE").Int()
+	c.NOTEQUAL = webCtx.Get("NOTEQUAL").Int()
+	c.NO_ERROR = webCtx.Get("NO_ERROR").Int()
+	c.NUM_COMPRESSED_TEXTURE_FORMATS = 0
+	c.ONE = webCtx.Get("ONE").Int()
+	c.ONE_MINUS_CONSTANT_ALPHA = webCtx.Get("ONE_MINUS_CONSTANT_ALPHA").Int()
+	c.ONE_MINUS_CONSTANT_COLOR = webCtx.Get("ONE_MINUS_CONSTANT_COLOR").Int()
+	c.ONE_MINUS_DST_ALPHA = webCtx.Get("ONE_MINUS_DST_ALPHA").Int()
+	c.ONE_MINUS_DST_COLOR = webCtx.Get("ONE_MINUS_DST_COLOR").Int()
+	c.ONE_MINUS_SRC_ALPHA = webCtx.Get("ONE_MINUS_SRC_ALPHA").Int()
+	c.ONE_MINUS_SRC_COLOR = webCtx.Get("ONE_MINUS_SRC_COLOR").Int()
+	c.OUT_OF_MEMORY = webCtx.Get("OUT_OF_MEMORY").Int()
+	c.PACK_ALIGNMENT = webCtx.Get("PACK_ALIGNMENT").Int()
+	c.POINTS = webCtx.Get("POINTS").Int()
+	c.POLYGON_OFFSET_FACTOR = webCtx.Get("POLYGON_OFFSET_FACTOR").Int()
+	c.POLYGON_OFFSET_FILL = webCtx.Get("POLYGON_OFFSET_FILL").Int()
+	c.POLYGON_OFFSET_UNITS = webCtx.Get("POLYGON_OFFSET_UNITS").Int()
+	c.RED_BITS = webCtx.Get("RED_BITS").Int()
+	c.RENDERBUFFER = webCtx.Get("RENDERBUFFER").Int()
+	c.RENDERBUFFER_ALPHA_SIZE = webCtx.Get("RENDERBUFFER_ALPHA_SIZE").Int()
+	c.RENDERBUFFER_BINDING = webCtx.Get("RENDERBUFFER_BINDING").Int()
+	c.RENDERBUFFER_BLUE_SIZE = webCtx.Get("RENDERBUFFER_BLUE_SIZE").Int()
+	c.RENDERBUFFER_DEPTH_SIZE = webCtx.Get("RENDERBUFFER_DEPTH_SIZE").Int()
+	c.RENDERBUFFER_GREEN_SIZE = webCtx.Get("RENDERBUFFER_GREEN_SIZE").Int()
+	c.RENDERBUFFER_HEIGHT = webCtx.Get("RENDERBUFFER_HEIGHT").Int()
+	c.RENDERBUFFER_INTERNAL_FORMAT = webCtx.Get("RENDERBUFFER_INTERNAL_FORMAT").Int()
+	c.RENDERBUFFER_RED_SIZE = webCtx.Get("RENDERBUFFER_RED_SIZE").Int()
+	c.RENDERBUFFER_STENCIL_SIZE = webCtx.Get("RENDERBUFFER_STENCIL_SIZE").Int()
+	c.RENDERBUFFER_WIDTH = webCtx.Get("RENDERBUFFER_WIDTH").Int()
+	c.RENDERER = webCtx.Get("RENDERER").Int()
+	c.REPEAT = webCtx.Get("REPEAT").Int()
+	c.REPLACE = webCtx.Get("REPLACE").Int()
+	c.RGB = webCtx.Get("RGB").Int()
+	c.RGB5_A1 = webCtx.Get("RGB5_A1").Int()
+	c.RGB565 = webCtx.Get("RGB565").Int()
+	c.RGBA = webCtx.Get("RGBA").Int()
+	c.RGBA4 = webCtx.Get("RGBA4").Int()
+	c.SAMPLER_2D = webCtx.Get("SAMPLER_2D").Int()
+	c.SAMPLER_CUBE = webCtx.Get("SAMPLER_CUBE").Int()
+	c.SAMPLES = webCtx.Get("SAMPLES").Int()
+	c.SAMPLE_ALPHA_TO_COVERAGE = webCtx.Get("SAMPLE_ALPHA_TO_COVERAGE").Int()
+	c.SAMPLE_BUFFERS = webCtx.Get("SAMPLE_BUFFERS").Int()
+	c.SAMPLE_COVERAGE = webCtx.Get("SAMPLE_COVERAGE").Int()
+	c.SAMPLE_COVERAGE_INVERT = webCtx.Get("SAMPLE_COVERAGE_INVERT").Int()
+	c.SAMPLE_COVERAGE_VALUE = webCtx.Get("SAMPLE_COVERAGE_VALUE").Int()
+	c.SCISSOR_BOX = webCtx.Get("SCISSOR_BOX").Int()
+	c.SCISSOR_TEST = webCtx.Get("SCISSOR_TEST").Int()
+	c.SHADER_TYPE = webCtx.Get("SHADER_TYPE").Int()
+	c.SHADING_LANGUAGE_VERSION = webCtx.Get("SHADING_LANGUAGE_VERSION").Int()
+	c.SHORT = webCtx.Get("SHORT").Int()
+	c.SRC_ALPHA = webCtx.Get("SRC_ALPHA").Int()
+	c.SRC_ALPHA_SATURATE = webCtx.Get("SRC_ALPHA_SATURATE").Int()
+	c.SRC_COLOR = webCtx.Get("SRC_COLOR").Int()
+	c.STATIC_DRAW = webCtx.Get("STATIC_DRAW").Int()
+	c.STENCIL_ATTACHMENT = webCtx.Get("STENCIL_ATTACHMENT").Int()
+	c.STENCIL_BACK_FAIL = webCtx.Get("STENCIL_BACK_FAIL").Int()
+	c.STENCIL_BACK_FUNC = webCtx.Get("STENCIL_BACK_FUNC").Int()
+	c.STENCIL_BACK_PASS_DEPTH_FAIL = webCtx.Get("STENCIL_BACK_PASS_DEPTH_FAIL").Int()
+	c.STENCIL_BACK_PASS_DEPTH_PASS = webCtx.Get("STENCIL_BACK_PASS_DEPTH_PASS").Int()
+	c.STENCIL_BACK_REF = webCtx.Get("STENCIL_BACK_REF").Int()
+	c.STENCIL_BACK_VALUE_MASK = webCtx.Get("STENCIL_BACK_VALUE_MASK").Int()
+	c.STENCIL_BACK_WRITEMASK = webCtx.Get("STENCIL_BACK_WRITEMASK").Int()
+	c.STENCIL_BITS = webCtx.Get("STENCIL_BITS").Int()
+	c.STENCIL_BUFFER_BIT = webCtx.Get("STENCIL_BUFFER_BIT").Int()
+	c.STENCIL_CLEAR_VALUE = webCtx.Get("STENCIL_CLEAR_VALUE").Int()
+	c.STENCIL_FAIL = webCtx.Get("STENCIL_FAIL").Int()
+	c.STENCIL_FUNC = webCtx.Get("STENCIL_FUNC").Int()
+	c.STENCIL_INDEX = webCtx.Get("STENCIL_INDEX").Int()
+	c.STENCIL_INDEX8 = webCtx.Get("STENCIL_INDEX8").Int()
+	c.STENCIL_PASS_DEPTH_FAIL = webCtx.Get("STENCIL_PASS_DEPTH_FAIL").Int()
+	c.STENCIL_PASS_DEPTH_PASS = webCtx.Get("STENCIL_PASS_DEPTH_PASS").Int()
+	c.STENCIL_REF = webCtx.Get("STENCIL_REF").Int()
+	c.STENCIL_TEST = webCtx.Get("STENCIL_TEST").Int()
+	c.STENCIL_VALUE_MASK = webCtx.Get("STENCIL_VALUE_MASK").Int()
+	c.STENCIL_WRITEMASK = webCtx.Get("STENCIL_WRITEMASK").Int()
+	c.STREAM_DRAW = webCtx.Get("STREAM_DRAW").Int()
+	c.SUBPIXEL_BITS = webCtx.Get("SUBPIXEL_BITS").Int()
+	c.TEXTURE = webCtx.Get("TEXTURE").Int()
+	c.TEXTURE0 = webCtx.Get("TEXTURE0").Int()
+	c.TEXTURE1 = webCtx.Get("TEXTURE1").Int()
+	c.TEXTURE2 = webCtx.Get("TEXTURE2").Int()
+	c.TEXTURE3 = webCtx.Get("TEXTURE3").Int()
+	c.TEXTURE4 = webCtx.Get("TEXTURE4").Int()
+	c.TEXTURE5 = webCtx.Get("TEXTURE5").Int()
+	c.TEXTURE6 = webCtx.Get("TEXTURE6").Int()
+	c.TEXTURE7 = webCtx.Get("TEXTURE7").Int()
+	c.TEXTURE8 = webCtx.Get("TEXTURE8").Int()
+	c.TEXTURE9 = webCtx.Get("TEXTURE9").Int()
+	c.TEXTURE10 = webCtx.Get("TEXTURE10").Int()
+	c.TEXTURE11 = webCtx.Get("TEXTURE11").Int()
+	c.TEXTURE12 = webCtx.Get("TEXTURE12").Int()
+	c.TEXTURE13 = webCtx.Get("TEXTURE13").Int()
+	c.TEXTURE14 = webCtx.Get("TEXTURE14").Int()
+	c.TEXTURE15 = webCtx.Get("TEXTURE15").Int()
+	c.TEXTURE16 = webCtx.Get("TEXTURE16").Int()
+	c.TEXTURE17 = webCtx.Get("TEXTURE17").Int()
+	c.TEXTURE18 = webCtx.Get("TEXTURE18").Int()
+	c.TEXTURE19 = webCtx.Get("TEXTURE19").Int()
+	c.TEXTURE20 = webCtx.Get("TEXTURE20").Int()
+	c.TEXTURE21 = webCtx.Get("TEXTURE21").Int()
+	c.TEXTURE22 = webCtx.Get("TEXTURE22").Int()
+	c.TEXTURE23 = webCtx.Get("TEXTURE23").Int()
+	c.TEXTURE24 = webCtx.Get("TEXTURE24").Int()
+	c.TEXTURE25 = webCtx.Get("TEXTURE25").Int()
+	c.TEXTURE26 = webCtx.Get("TEXTURE26").Int()
+	c.TEXTURE27 = webCtx.Get("TEXTURE27").Int()
+	c.TEXTURE28 = webCtx.Get("TEXTURE28").Int()
+	c.TEXTURE29 = webCtx.Get("TEXTURE29").Int()
+	c.TEXTURE30 = webCtx.Get("TEXTURE30").Int()
+	c.TEXTURE31 = webCtx.Get("TEXTURE31").Int()
+	c.TEXTURE_2D = webCtx.Get("TEXTURE_2D").Int()
+	c.TEXTURE_BINDING_2D = webCtx.Get("TEXTURE_BINDING_2D").Int()
+	c.TEXTURE_BINDING_CUBE_MAP = webCtx.Get("TEXTURE_BINDING_CUBE_MAP").Int()
+	c.TEXTURE_CUBE_MAP = webCtx.Get("TEXTURE_CUBE_MAP").Int()
+	c.TEXTURE_CUBE_MAP_NEGATIVE_X = webCtx.Get("TEXTURE_CUBE_MAP_NEGATIVE_X").Int()
+	c.TEXTURE_CUBE_MAP_NEGATIVE_Y = webCtx.Get("TEXTURE_CUBE_MAP_NEGATIVE_Y").Int()
+	c.TEXTURE_CUBE_MAP_NEGATIVE_Z = webCtx.Get("TEXTURE_CUBE_MAP_NEGATIVE_Z").Int()
+	c.TEXTURE_CUBE_MAP_POSITIVE_X = webCtx.Get("TEXTURE_CUBE_MAP_POSITIVE_X").Int()
+	c.TEXTURE_CUBE_MAP_POSITIVE_Y = webCtx.Get("TEXTURE_CUBE_MAP_POSITIVE_Y").Int()
+	c.TEXTURE_CUBE_MAP_POSITIVE_Z = webCtx.Get("TEXTURE_CUBE_MAP_POSITIVE_Z").Int()
+	c.TEXTURE_MAG_FILTER = webCtx.Get("TEXTURE_MAG_FILTER").Int()
+	c.TEXTURE_MIN_FILTER = webCtx.Get("TEXTURE_MIN_FILTER").Int()
+	c.TEXTURE_WRAP_S = webCtx.Get("TEXTURE_WRAP_S").Int()
+	c.TEXTURE_WRAP_T = webCtx.Get("TEXTURE_WRAP_T").Int()
+	c.TRIANGLES = webCtx.Get("TRIANGLES").Int()
+	c.TRIANGLE_FAN = webCtx.Get("TRIANGLE_FAN").Int()
+	c.TRIANGLE_STRIP = webCtx.Get("TRIANGLE_STRIP").Int()
+	c.UNPACK_ALIGNMENT = webCtx.Get("UNPACK_ALIGNMENT").Int()
+	c.UNPACK_COLORSPACE_CONVERSION_WEBGL = webCtx.Get("UNPACK_COLORSPACE_CONVERSION_WEBGL").Int()
+	c.UNPACK_FLIP_Y_WEBGL = webCtx.Get("UNPACK_FLIP_Y_WEBGL").Int()
+	c.UNPACK_PREMULTIPLY_ALPHA_WEBGL = webCtx.Get("UNPACK_PREMULTIPLY_ALPHA_WEBGL").Int()
+	c.UNSIGNED_BYTE = webCtx.Get("UNSIGNED_BYTE").Int()
+	c.UNSIGNED_INT = webCtx.Get("UNSIGNED_INT").Int()
+	c.UNSIGNED_SHORT = webCtx.Get("UNSIGNED_SHORT").Int()
+	c.UNSIGNED_SHORT_4_4_4_4 = webCtx.Get("UNSIGNED_SHORT_4_4_4_4").Int()
+	c.UNSIGNED_SHORT_5_5_5_1 = webCtx.Get("UNSIGNED_SHORT_5_5_5_1").Int()
+	c.UNSIGNED_SHORT_5_6_5 = webCtx.Get("UNSIGNED_SHORT_5_6_5").Int()
+	c.VALIDATE_STATUS = webCtx.Get("VALIDATE_STATUS").Int()
+	c.VERSION = webCtx.Get("VERSION").Int()
+	c.VERTEX_ATTRIB_ARRAY_BUFFER_BINDING = webCtx.Get("VERTEX_ATTRIB_ARRAY_BUFFER_BINDING").Int()
+	c.VERTEX_ATTRIB_ARRAY_ENABLED = webCtx.Get("VERTEX_ATTRIB_ARRAY_ENABLED").Int()
+	c.VERTEX_ATTRIB_ARRAY_NORMALIZED = webCtx.Get("VERTEX_ATTRIB_ARRAY_NORMALIZED").Int()
+	c.VERTEX_ATTRIB_ARRAY_POINTER = webCtx.Get("VERTEX_ATTRIB_ARRAY_POINTER").Int()
+	c.VERTEX_ATTRIB_ARRAY_SIZE = webCtx.Get("VERTEX_ATTRIB_ARRAY_SIZE").Int()
+	c.VERTEX_ATTRIB_ARRAY_STRIDE = webCtx.Get("VERTEX_ATTRIB_ARRAY_STRIDE").Int()
+	c.VERTEX_ATTRIB_ARRAY_TYPE = webCtx.Get("VERTEX_ATTRIB_ARRAY_TYPE").Int()
+	c.VERTEX_SHADER = webCtx.Get("VERTEX_SHADER").Int()
+	c.VIEWPORT = webCtx.Get("VIEWPORT").Int()
+	c.ZERO = webCtx.Get("ZERO").Int()
+	c.TRUE = 1
 }
 
 // Returns the context attributes active on the context. These values might
@@ -461,12 +759,12 @@ func (c *Context) ActiveTexture(texture int) {
 
 // Attaches a WebGLShader object to a WebGLProgram object.
 func (c *Context) AttachShader(program *Program, shader *Shader) {
-	c.Call("attachShader", program.Object, shader.Object)
+	c.Call("attachShader", program.Value, shader.Value)
 }
 
 // Binds a generic vertex index to a user-defined attribute variable.
 func (c *Context) BindAttribLocation(program *Program, index int, name string) {
-	c.Call("bindAttribLocation", program.Object, index, name)
+	c.Call("bindAttribLocation", program.Value, index, name)
 }
 
 // Associates a buffer with a buffer target.
@@ -475,7 +773,7 @@ func (c *Context) BindBuffer(target int, buffer *Buffer) {
 		c.Call("bindBuffer", target, nil)
 		return
 	}
-	c.Call("bindBuffer", target, buffer.Object)
+	c.Call("bindBuffer", target, buffer.Value)
 }
 
 // Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
@@ -484,7 +782,7 @@ func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
 		c.Call("bindFramebuffer", target, nil)
 		return
 	}
-	c.Call("bindFramebuffer", target, framebuffer.Object)
+	c.Call("bindFramebuffer", target, framebuffer.Value)
 }
 
 // Binds a WebGLRenderbuffer object to be used for rendering.
@@ -502,18 +800,54 @@ func (c *Context) BindTexture(target int, texture *Texture) {
 		c.Call("bindTexture", target, nil)
 		return
 	}
-	c.Call("bindTexture", target, texture.Object)
+	c.Call("bindTexture", target, texture.Value)
 }
 
 // Creates a buffer in memory and initializes it with array data.
 // If no array is provided, the contents of the buffer is initialized to 0.
 func (c *Context) BufferData(target int, data interface{}, usage int) {
-	c.Call("bufferData", target, data, usage)
+	buf, ok := data.([]uint8)
+	d := js.TypedArrayOf([]uint8{})
+	if ok {
+		d = js.TypedArrayOf(buf)
+	}
+	buf2, ok := data.([]uint16)
+	if ok {
+		d = js.TypedArrayOf(buf2)
+	}
+	buf3, ok := data.([]uint32)
+	if ok {
+		d = js.TypedArrayOf(buf3)
+	}
+	buff32, ok := data.([]float32)
+	if ok {
+		d = js.TypedArrayOf(buff32)
+	}
+	c.Call("bufferData", target, d, usage)
+	d.Release()
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
-	c.Call("bufferSubData", target, offset, data)
+	buf, ok := data.([]uint8)
+	d := js.TypedArrayOf([]uint8{})
+	if ok {
+		d = js.TypedArrayOf(buf)
+	}
+	buf2, ok := data.([]uint16)
+	if ok {
+		d = js.TypedArrayOf(buf2)
+	}
+	buf3, ok := data.([]uint32)
+	if ok {
+		d = js.TypedArrayOf(buf3)
+	}
+	buff32, ok := data.([]float32)
+	if ok {
+		d = js.TypedArrayOf(buff32)
+	}
+	c.Call("bufferSubData", target, offset, d)
+	d.Release()
 }
 
 // Returns whether the currently bound WebGLFramebuffer is complete.
@@ -549,11 +883,11 @@ func (c *Context) ColorMask(r, g, b, a bool) {
 
 // Compiles the GLSL shader source into binary data used by the WebGLProgram object.
 func (c *Context) CompileShader(shader *Shader) {
-	c.Call("compileShader", shader.Object)
+	c.Call("compileShader", shader.Value)
 
-	status := c.Call("getShaderParameter", shader.Object, c.COMPILE_STATUS)
+	status := c.Call("getShaderParameter", shader.Value, c.COMPILE_STATUS)
 	if !status.Bool() {
-		info := c.Call("getShaderInfoLog", shader.Object)
+		info := c.Call("getShaderInfoLog", shader.Value)
 		log.Print("Error: could not compile shader:", info.String())
 	}
 }
@@ -570,7 +904,8 @@ func (c *Context) CopyTexSubImage2D(target, level, xoffset, yoffset, x, y, w, h 
 
 // Creates and initializes a WebGLBuffer.
 func (c *Context) CreateBuffer() *Buffer {
-	return &Buffer{c.Call("createBuffer")}
+	b := &Buffer{c.Call("createBuffer")}
+	return b
 }
 
 // Returns a WebGLFramebuffer object.
@@ -621,24 +956,24 @@ func (c *Context) DeleteFramebuffer(framebuffer *FrameBuffer) {
 // Any shader objects associated with the program will be detached.
 // They will be deleted if they were already flagged for deletion.
 func (c *Context) DeleteProgram(program *Program) {
-	c.Call("deleteProgram", program.Object)
+	c.Call("deleteProgram", program.Value)
 }
 
 // Deletes the specified renderbuffer object. If the renderbuffer is
 // currently bound, it will become unbound. If the renderbuffer is
 // attached to the currently bound framebuffer, it is detached.
 func (c *Context) DeleteRenderbuffer(renderbuffer *RenderBuffer) {
-	c.Call("deleteRenderbuffer", renderbuffer.Object)
+	c.Call("deleteRenderbuffer", renderbuffer.Value)
 }
 
 // Deletes a specific shader object.
 func (c *Context) DeleteShader(shader *Shader) {
-	c.Call("deleteShader", shader.Object)
+	c.Call("deleteShader", shader.Value)
 }
 
 // Deletes a specific texture object.
 func (c *Context) DeleteTexture(texture *Texture) {
-	c.Call("deleteTexture", texture.Object)
+	c.Call("deleteTexture", texture.Value)
 }
 
 // Sets whether or not you can write to the depth buffer.
@@ -653,7 +988,7 @@ func (c *Context) DepthRange(zNear, zFar float64) {
 
 // Detach a shader object from a program object.
 func (c *Context) DetachShader(program *Program, shader *Shader) {
-	c.Call("detachShader", program.Object, shader.Object)
+	c.Call("detachShader", program.Value, shader.Value)
 }
 
 // Turns off specific WebGL capabilities for this context.
@@ -724,18 +1059,18 @@ func (c *Context) GenerateMipmap(target int) {
 // Returns an WebGLActiveInfo object containing the size, type, and name
 // of a vertex attribute at a specific index position in a program object.
 func (c *Context) GetActiveAttrib(program *Program, index int) string {
-	return c.Call("getActiveAttrib", program.Object, index).String()
+	return c.Call("getActiveAttrib", program.Value, index).String()
 }
 
 // Returns an WebGLActiveInfo object containing the size, type, and name
 // of a uniform attribute at a specific index position in a program object.
 func (c *Context) GetActiveUniform(program *Program, index int) string {
-	return c.Call("getActiveUniform", program.Object, index).String()
+	return c.Call("getActiveUniform", program.Value, index).String()
 }
 
 // Returns a slice of WebGLShaders bound to a WebGLProgram.
 func (c *Context) GetAttachedShaders(program *Program) []*Shader {
-	objs := c.Call("getAttachedShaders", program.Object)
+	objs := c.Call("getAttachedShaders", program.Value)
 	shaders := make([]*Shader, objs.Length())
 	for i := 0; i < objs.Length(); i++ {
 		shaders[i] = &Shader{objs.Index(i)}
@@ -745,7 +1080,7 @@ func (c *Context) GetAttachedShaders(program *Program) []*Shader {
 
 // Returns an index to the location in a program of a named attribute variable.
 func (c *Context) GetAttribLocation(program *Program, name string) int {
-	return c.Call("getAttribLocation", program.Object, name).Int()
+	return c.Call("getAttribLocation", program.Value, name).Int()
 }
 
 // Returns the type of a parameter for a given buffer.
@@ -755,7 +1090,7 @@ func (c *Context) GetBufferParameter(target, pname int) int {
 
 // TODO: Create type specific variations.
 // Returns the natural type value for a constant parameter.
-func (c *Context) GetParameter(pname int) *js.Object {
+func (c *Context) GetParameter(pname int) js.Value {
 	return c.Call("getParameter", pname)
 }
 
@@ -766,32 +1101,32 @@ func (c *Context) GetError() int {
 
 // TODO: Create type specific variations.
 // Enables a passed extension, otherwise returns null.
-func (c *Context) GetExtension(name string) *js.Object {
+func (c *Context) GetExtension(name string) js.Value {
 	return c.Call("getExtension", name)
 }
 
 // TODO: Create type specific variations.
 // Gets a parameter value for a given target and attachment.
-func (c *Context) GetFramebufferAttachmentParameter(target, attachment, pname int) *js.Object {
+func (c *Context) GetFramebufferAttachmentParameter(target, attachment, pname int) js.Value {
 	return c.Call("getFramebufferAttachmentParameter", target, attachment, pname)
 }
 
 // Returns the value of the program parameter that corresponds to a supplied pname
 // which is interpreted as an int.
 func (c *Context) GetProgramParameteri(program *Program, pname int) int {
-	return c.Call("getProgramParameter", program.Object, pname).Int()
+	return c.Call("getProgramParameter", program.Value, pname).Int()
 }
 
 // Returns the value of the program parameter that corresponds to a supplied pname
 // which is interpreted as a bool.
 func (c *Context) GetProgramParameterb(program *Program, pname int) bool {
-	return c.Call("getProgramParameter", program.Object, pname).Bool()
+	return c.Call("getProgramParameter", program.Value, pname).Bool()
 }
 
 // Returns information about the last error that occurred during
 // the failed linking or validation of a WebGL program object.
 func (c *Context) GetProgramInfoLog(program *Program) string {
-	return c.Call("getProgramInfoLog", program.Object).String()
+	return c.Call("getProgramInfoLog", program.Value).String()
 }
 
 // TODO: Create type specific variations.
@@ -802,28 +1137,28 @@ func (c *Context) GetRenderbufferParameter(target, pname int) int {
 
 // TODO: Create type specific variations.
 // Returns the value of the parameter associated with pname for a shader object.
-func (c *Context) GetShaderParameter(shader *Shader, pname int) *js.Object {
-	return c.Call("getShaderParameter", shader.Object, pname)
+func (c *Context) GetShaderParameter(shader *Shader, pname int) js.Value {
+	return c.Call("getShaderParameter", shader.Value, pname)
 }
 
 // Returns the value of the parameter associated with pname for a shader object.
 func (c *Context) GetShaderParameterb(shader *Shader, pname int) bool {
-	return c.Call("getShaderParameter", shader.Object, pname).Bool()
+	return c.Call("getShaderParameter", shader.Value, pname).Bool()
 }
 
 // Returns errors which occur when compiling a shader.
 func (c *Context) GetShaderInfoLog(shader *Shader) string {
-	return c.Call("getShaderInfoLog", shader.Object).String()
+	return c.Call("getShaderInfoLog", shader.Value).String()
 }
 
 // Returns source code string associated with a shader object.
 func (c *Context) GetShaderSource(shader *Shader) string {
-	return c.Call("getShaderSource", shader.Object).String()
+	return c.Call("getShaderSource", shader.Value).String()
 }
 
 // Returns a parameter from a shader object
 func (c *Context) GetShaderiv(shader *Shader, pname uint32) bool {
-	return c.Call("getShaderParameter", shader.Object, pname).Bool()
+	return c.Call("getShaderParameter", shader.Value, pname).Bool()
 }
 
 // Returns a slice of supported extension strings.
@@ -838,26 +1173,26 @@ func (c *Context) GetSupportedExtensions() []string {
 
 // TODO: Create type specific variations.
 // Returns the value for a parameter on an active texture unit.
-func (c *Context) GetTexParameter(target, pname int) *js.Object {
+func (c *Context) GetTexParameter(target, pname int) js.Value {
 	return c.Call("getTexParameter", target, pname)
 }
 
 // TODO: Create type specific variations.
 // Gets the uniform value for a specific location in a program.
-func (c *Context) GetUniform(program *Program, location *UniformLocation) *js.Object {
-	return c.Call("getUniform", program.Object, location.Object)
+func (c *Context) GetUniform(program *Program, location *UniformLocation) js.Value {
+	return c.Call("getUniform", program.Value, location.Value)
 }
 
 // Returns a WebGLUniformLocation object for the location
 // of a uniform variable within a WebGLProgram object.
 func (c *Context) GetUniformLocation(program *Program, name string) *UniformLocation {
-	return &UniformLocation{c.Call("getUniformLocation", program.Object, name)}
+	return &UniformLocation{c.Call("getUniformLocation", program.Value, name)}
 }
 
 // TODO: Create type specific variations.
 // Returns data for a particular characteristic of a vertex
 // attribute at an index in a vertex attribute array.
-func (c *Context) GetVertexAttrib(index, pname int) *js.Object {
+func (c *Context) GetVertexAttrib(index, pname int) js.Value {
 	return c.Call("getVertexAttrib", index, pname)
 }
 
@@ -869,7 +1204,7 @@ func (c *Context) GetVertexAttribOffset(index, pname int) int {
 // public function hint(target:GLenum, mode:GLenum) : Void;
 
 // Returns true if buffer is valid, false otherwise.
-func (c *Context) IsBuffer(buffer js.Object) bool {
+func (c *Context) IsBuffer(buffer js.Value) bool {
 	return c.Call("isBuffer", buffer).Bool()
 }
 
@@ -880,27 +1215,27 @@ func (c *Context) IsContextLost() bool {
 
 // Returns true if buffer is valid, false otherwise.
 func (c *Context) IsFramebuffer(framebuffer *FrameBuffer) bool {
-	return c.Call("isFramebuffer", framebuffer.Object).Bool()
+	return c.Call("isFramebuffer", framebuffer.Value).Bool()
 }
 
 // Returns true if program object is valid, false otherwise.
 func (c *Context) IsProgram(program *Program) bool {
-	return c.Call("isProgram", program.Object).Bool()
+	return c.Call("isProgram", program.Value).Bool()
 }
 
 // Returns true if buffer is valid, false otherwise.
 func (c *Context) IsRenderbuffer(renderbuffer *RenderBuffer) bool {
-	return c.Call("isRenderbuffer", renderbuffer.Object).Bool()
+	return c.Call("isRenderbuffer", renderbuffer.Value).Bool()
 }
 
 // Returns true if shader is valid, false otherwise.
 func (c *Context) IsShader(shader *Shader) bool {
-	return c.Call("isShader", shader.Object).Bool()
+	return c.Call("isShader", shader.Value).Bool()
 }
 
 // Returns true if texture is valid, false otherwise.
 func (c *Context) IsTexture(texture *Texture) bool {
-	return c.Call("isTexture", texture.Object).Bool()
+	return c.Call("isTexture", texture.Value).Bool()
 }
 
 // Returns whether or not a WebGL capability is enabled for this context.
@@ -916,11 +1251,11 @@ func (c *Context) LineWidth(width float32) {
 // Links an attached vertex shader and an attached fragment shader
 // to a program so it can be used by the graphics processing unit (GPU).
 func (c *Context) LinkProgram(program *Program) {
-	c.Call("linkProgram", program.Object)
+	c.Call("linkProgram", program.Value)
 
-	param := c.Call("getProgramParameter", program.Object, c.LINK_STATUS)
+	param := c.Call("getProgramParameter", program.Value, c.LINK_STATUS)
 	if !param.Bool() {
-		info := c.Call("getProgramInfoLog", program.Object)
+		info := c.Call("getProgramInfoLog", program.Value)
 		log.Print("Error: could not link program: ", info.String())
 	}
 }
@@ -940,7 +1275,7 @@ func (c *Context) PolygonOffset(factor, units float64) {
 // TODO: Figure out if pixels should be a slice.
 // Reads pixel data into an ArrayBufferView object from a
 // rectangular area in the color buffer of the active frame buffer.
-func (c *Context) ReadPixels(x, y, width, height, format, typ int, pixels js.Object) {
+func (c *Context) ReadPixels(x, y, width, height, format, typ int, pixels js.Value) {
 	c.Call("readPixels", x, y, width, height, format, typ, pixels)
 }
 
@@ -956,7 +1291,7 @@ func (c *Context) Scissor(x, y, width, height int) {
 
 // Sets and replaces shader source code in a shader object.
 func (c *Context) ShaderSource(shader *Shader, source string) {
-	c.Call("shaderSource", shader.Object, source)
+	c.Call("shaderSource", shader.Value, source)
 }
 
 // public function stencilMask(mask:GLuint) : Void;
@@ -966,9 +1301,13 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
 	switch img := data.(type) {
 	case *image.NRGBA:
-		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, img.Pix)
+		d := js.TypedArrayOf(img.Pix)
+		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
+		d.Release()
 	case *image.RGBA:
-		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, img.Pix)
+		d := js.TypedArrayOf(img.Pix)
+		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
+		d.Release()
 	default:
 		c.Call("texImage2D", target, level, internalFormat, format, kind, data)
 	}
@@ -980,48 +1319,48 @@ func (c *Context) TexParameteri(target int, pname int, param int) {
 }
 
 // Replaces a portion of an existing 2D texture image with all of another image.
-func (c *Context) TexSubImage2D(target, level, xoffset, yoffset, format, typ int, image js.Object) {
+func (c *Context) TexSubImage2D(target, level, xoffset, yoffset, format, typ int, image js.Value) {
 	c.Call("texSubImage2D", target, level, xoffset, yoffset, format, typ, image)
 }
 
 // Assigns a floating point value to a uniform variable for the current program object.
 func (c *Context) Uniform1f(location *UniformLocation, x float32) {
-	c.Call("uniform1f", location.Object, x)
+	c.Call("uniform1f", location.Value, x)
 }
 
 // Assigns a integer value to a uniform variable for the current program object.
 func (c *Context) Uniform1i(location *UniformLocation, x int) {
-	c.Call("uniform1i", location.Object, x)
+	c.Call("uniform1i", location.Value, x)
 }
 
 // Assigns 2 floating point values to a uniform variable for the current program object.
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
-	c.Call("uniform2f", location.Object, x, y)
+	c.Call("uniform2f", location.Value, x, y)
 }
 
 // Assigns 2 integer values to a uniform variable for the current program object.
 func (c *Context) Uniform2i(location *UniformLocation, x, y int) {
-	c.Call("uniform2i", location.Object, x, y)
+	c.Call("uniform2i", location.Value, x, y)
 }
 
 // Assigns 3 floating point values to a uniform variable for the current program object.
 func (c *Context) Uniform3f(location *UniformLocation, x, y, z float32) {
-	c.Call("uniform3f", location.Object, x, y, z)
+	c.Call("uniform3f", location.Value, x, y, z)
 }
 
 // Assigns 3 integer values to a uniform variable for the current program object.
 func (c *Context) Uniform3i(location *UniformLocation, x, y, z int) {
-	c.Call("uniform3i", location.Object, x, y, z)
+	c.Call("uniform3i", location.Value, x, y, z)
 }
 
 // Assigns 4 floating point values to a uniform variable for the current program object.
 func (c *Context) Uniform4f(location *UniformLocation, x, y, z, w float32) {
-	c.Call("uniform4f", location.Object, x, y, z, w)
+	c.Call("uniform4f", location.Value, x, y, z, w)
 }
 
 // Assigns 4 integer values to a uniform variable for the current program object.
 func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
-	c.Call("uniform4i", location.Object, x, y, z, w)
+	c.Call("uniform4i", location.Value, x, y, z, w)
 }
 
 // public function uniform1fv(location:WebGLUniformLocation, v:ArrayAccess<Float>) : Void;
@@ -1036,19 +1375,23 @@ func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
 // Sets values for a 2x2 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix2fv", location.Object, transpose, value)
+	d := js.TypedArrayOf(value)
+	c.Call("uniformMatrix2fv", location.Value, transpose, d)
+	d.Release()
 }
 
 // Sets values for a 3x3 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix3fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix3fv", location.Object, transpose, value)
+	d := js.TypedArrayOf(value)
+	c.Call("uniformMatrix3fv", location.Value, transpose, d)
 }
 
 // Sets values for a 4x4 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
-	c.Call("uniformMatrix4fv", location.Object, transpose, value)
+	d := js.TypedArrayOf(value)
+	c.Call("uniformMatrix4fv", location.Value, transpose, d)
 }
 
 // Set the program object to use for rendering.
@@ -1057,12 +1400,12 @@ func (c *Context) UseProgram(program *Program) {
 		c.Call("useProgram", nil)
 		return
 	}
-	c.Call("useProgram", *program.Object)
+	c.Call("useProgram", program.Value)
 }
 
 // Returns whether a given program can run in the current WebGL state.
 func (c *Context) ValidateProgram(program *Program) {
-	c.Call("validateProgram", program.Object)
+	c.Call("validateProgram", program.Value)
 }
 
 func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride int, offset int) {
