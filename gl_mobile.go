@@ -1201,9 +1201,9 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 
 	switch img := data.(type) {
 	case *image.NRGBA:
-		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
+		c.ctx.TexImage2D(gl.Enum(target), level, gl.RGBA, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
 	case *image.RGBA:
-		c.ctx.TexImage2D(gl.Enum(target), level, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
+		c.ctx.TexImage2D(gl.Enum(target), level, gl.RGBA, img.Bounds().Dx(), img.Bounds().Dy(), gl.Enum(format), gl.Enum(kind), *(*[]byte)(unsafe.Pointer(&img.Pix)))
 	default:
 		log.Println("Warning: TexImage2D does not support your requested type (yet)")
 	}
