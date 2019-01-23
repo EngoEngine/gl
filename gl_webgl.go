@@ -267,7 +267,6 @@ type Context struct {
 	STENCIL_CLEAR_VALUE                          int
 	STENCIL_FAIL                                 int
 	STENCIL_FUNC                                 int
-	STENCIL_INDEX                                int
 	STENCIL_INDEX8                               int
 	STENCIL_PASS_DEPTH_FAIL                      int
 	STENCIL_PASS_DEPTH_PASS                      int
@@ -598,7 +597,6 @@ func (c *Context) InitialContextValues() {
 	c.STENCIL_CLEAR_VALUE = webCtx.Get("STENCIL_CLEAR_VALUE").Int()
 	c.STENCIL_FAIL = webCtx.Get("STENCIL_FAIL").Int()
 	c.STENCIL_FUNC = webCtx.Get("STENCIL_FUNC").Int()
-	c.STENCIL_INDEX = webCtx.Get("STENCIL_INDEX").Int()
 	c.STENCIL_INDEX8 = webCtx.Get("STENCIL_INDEX8").Int()
 	c.STENCIL_PASS_DEPTH_FAIL = webCtx.Get("STENCIL_PASS_DEPTH_FAIL").Int()
 	c.STENCIL_PASS_DEPTH_PASS = webCtx.Get("STENCIL_PASS_DEPTH_PASS").Int()
