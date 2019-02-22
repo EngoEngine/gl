@@ -803,6 +803,11 @@ func (c *Context) BindTexture(target int, texture *Texture) {
 	c.Call("bindTexture", target, texture.Value)
 }
 
+// Select active texture unit
+func (c *Context) ActiveTexture(target int) {
+	c.Call("activeTexture", target)
+}
+
 // Creates a buffer in memory and initializes it with array data.
 // If no array is provided, the contents of the buffer is initialized to 0.
 func (c *Context) BufferData(target int, data interface{}, usage int) {

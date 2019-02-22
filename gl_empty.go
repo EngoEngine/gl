@@ -388,6 +388,8 @@ func (c *Context) CreateTexture() *Texture {
 
 func (c *Context) BindTexture(target int, texture *Texture) {}
 
+func (c *Context) ActiveTexture(target int) {}
+
 func (c *Context) TexParameteri(target int, pname int, param int) {}
 
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {}
