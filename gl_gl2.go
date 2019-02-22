@@ -748,6 +748,10 @@ func (c *Context) BindTexture(target int, texture *Texture) {
 	gl.BindTexture(uint32(target), texture.uint32)
 }
 
+func (c *Context) ActiveTexture(target int) {
+	gl.ActiveTexture(uint32(target))
+}
+
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	gl.TexParameteri(uint32(target), uint32(pname), int32(param))
 }
