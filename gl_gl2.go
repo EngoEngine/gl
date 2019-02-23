@@ -958,8 +958,13 @@ func (c *Context) PopMatrix() {
 }
 
 // CreateRenderBuffer creates a RenderBuffer object.
-func (c *Context) CreateRenderBuffer() RenderBuffer {
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
 	var id uint32
 	gl.GenRenderbuffers(1, &id)
-	return RenderBuffer{id}
+	return &RenderBuffer{id}
+}
+
+// DeleteRenderBuffer destroys the RenderBufffer object.
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+	gl.DeleteRenderbuffers(1, &rb.uint32)
 }

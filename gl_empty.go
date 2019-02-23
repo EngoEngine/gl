@@ -476,6 +476,8 @@ func (c *Context) PushMatrix() {}
 
 func (c *Context) PopMatrix() {}
 
-func (c *Context) CreateRenderBuffer() RenderBuffer {
-	return RenderBuffer{0}
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	return &RenderBuffer{0}
+}
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 }

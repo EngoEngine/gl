@@ -1328,6 +1328,11 @@ func (c *Context) Viewport(x, y, width, height int) {
 }
 
 // CreateRenderBuffer creates a RenderBuffer object.
-func (c *Context) CreateRenderBuffer() RenderBuffer {
-	return RenderBuffer{c.ctx.CreateRenderbuffer()}
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	return &RenderBuffer{c.ctx.CreateRenderbuffer()}
+}
+
+// DeleteRenderBuffer destroys the RenderBufffer object.
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+	c.ctx.DeleteRenderbuffer(rb.Renderbuffer)
 }
