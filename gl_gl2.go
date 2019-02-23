@@ -956,3 +956,10 @@ func (c *Context) PushMatrix() {
 func (c *Context) PopMatrix() {
 	gl.PopMatrix()
 }
+
+// CreateRenderBuffer creates a RenderBuffer object.
+func (c *Context) CreateRenderBuffer() RenderBuffer {
+	var id uint32
+	gl.GenRenderbuffers(1, &id)
+	return RenderBuffer{id}
+}

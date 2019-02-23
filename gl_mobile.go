@@ -1326,3 +1326,8 @@ func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride 
 func (c *Context) Viewport(x, y, width, height int) {
 	c.ctx.Viewport(x, y, width, height)
 }
+
+// CreateRenderBuffer creates a RenderBuffer object.
+func (c *Context) CreateRenderBuffer() RenderBuffer {
+	return RenderBuffer{c.ctx.CreateRenderbuffer()}
+}
