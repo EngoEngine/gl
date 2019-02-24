@@ -750,11 +750,6 @@ func (c *Context) StencilFuncSeparate(face, function, ref, mask int) {
 
 // ---------------------------------------------------------------------------
 
-// Specifies the active texture unit.
-func (c *Context) ActiveTexture(texture int) {
-	c.Call("activeTexture", texture)
-}
-
 // Attaches a WebGLShader object to a WebGLProgram object.
 func (c *Context) AttachShader(program *Program, shader *Shader) {
 	c.Call("attachShader", program.Value, shader.Value)
@@ -1034,12 +1029,6 @@ func (c *Context) Finish() {
 
 func (c *Context) Flush() {
 	c.Call("flush")
-}
-
-// Attaches a WebGLRenderbuffer object as a logical buffer to the
-// currently bound WebGLFramebuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment, renderbufferTarget int, renderbuffer *RenderBuffer) {
-	c.Call("framebufferRenderBuffer", target, attachment, renderbufferTarget, renderbuffer)
 }
 
 // Attaches a texture to a WebGLFramebuffer object.
