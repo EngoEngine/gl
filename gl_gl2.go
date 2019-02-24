@@ -990,3 +990,8 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))
 }
+
+// FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+	gl.FramebufferRenderbuffer(target, attachment, gl.RENDERBUFFER, rb.uint32)
+}

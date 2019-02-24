@@ -495,3 +495,6 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 }
+
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+}

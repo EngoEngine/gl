@@ -1356,3 +1356,8 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	c.ctx.FramebufferTexture2D(target, attachment, texTarget, t.Texture, level)
 }
+
+// FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+	c.ctx.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(c.RENDERBUFFER), rb.Renderbuffer)
+}
