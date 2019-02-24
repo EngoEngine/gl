@@ -1449,3 +1449,8 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
 	c.Call("renderbufferStorage", rb.value, internalFormat, width, height)
 }
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	return &FrameBuffer{c.Call("createFramebuffer")}
+}

@@ -1346,3 +1346,8 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
 	c.ctx.RenderbufferStorage(rb.Renderbuffer, internalFormat, width, height)
 }
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	return &FrameBuffer{c.ctx.CreateFramebuffer()}
+}

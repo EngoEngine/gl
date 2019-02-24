@@ -978,3 +978,10 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
 	gl.RenderbufferStorage(rb.uint32, internalFormat, int32(width), int32(height))
 }
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	var id uint32
+	gl.GenFramebuffers(1, &id)
+	return &FrameBuffer{id}
+}
