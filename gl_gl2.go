@@ -986,6 +986,11 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 	return &FrameBuffer{id}
 }
 
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	gl.DeleteFramebuffers(1, &fb.uint32)
+}
+
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))

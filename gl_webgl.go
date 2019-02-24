@@ -1455,6 +1455,11 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 	return &FrameBuffer{c.Call("createFramebuffer")}
 }
 
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	c.Call("deleteFramebuffer", fb.Value)
+}
+
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	c.Call("framebufferTexture2D", target, attachment, texTarget, t.Value, level)

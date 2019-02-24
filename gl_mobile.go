@@ -1352,6 +1352,11 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 	return &FrameBuffer{c.ctx.CreateFramebuffer()}
 }
 
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	c.ctx.DeleteFramebuffer(fb.Framebuffer)
+}
+
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	c.ctx.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), t.Texture, level)
