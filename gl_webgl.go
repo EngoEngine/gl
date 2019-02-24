@@ -1454,3 +1454,8 @@ func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, w
 func (c *Context) CreateFrameBuffer() *FrameBuffer {
 	return &FrameBuffer{c.Call("createFramebuffer")}
 }
+
+// FrameBufferTexture2D attaches a texture to a FrameBuffer
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+	c.Call("framebufferTexture2D", target, attachment, texTarget, t.Value, level)
+}
