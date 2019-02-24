@@ -496,6 +496,9 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
 }
 
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+}
+
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 }
 

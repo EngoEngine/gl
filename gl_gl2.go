@@ -991,6 +991,15 @@ func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
 	gl.DeleteFramebuffers(1, &fb.uint32)
 }
 
+// BindFrameBuffer binds a framebuffer.
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+	if fb != nil {
+		gl.BindFramebuffer(gl.FRAMEBUFFER, fb.uint32)
+	} else {
+		gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
+	}
+}
+
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
 	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))
