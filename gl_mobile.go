@@ -665,11 +665,6 @@ func (c *Context) StencilFuncSeparate(face, function, ref, mask int) {
 
 // ---------------------------------------------------------------------------
 
-// Specifies the active texture unit.
-func (c *Context) ActiveTexture(texture int) {
-	c.ctx.ActiveTexture(gl.Enum(texture))
-}
-
 // Attaches a WebGLShader object to a WebGLProgram object.
 func (c *Context) AttachShader(program *Program, shader *Shader) {
 	c.ctx.AttachShader(program.Program, shader.Shader)
@@ -942,12 +937,6 @@ func (c *Context) Finish() {
 
 func (c *Context) Flush() {
 	c.ctx.Flush()
-}
-
-// Attaches a WebGLRenderbuffer object as a logical buffer to the
-// currently bound WebGLFramebuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment, renderbufferTarget int, renderbuffer *RenderBuffer) {
-	c.ctx.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(renderbufferTarget), renderbuffer.Renderbuffer)
 }
 
 // Attaches a texture to a WebGLFramebuffer object.
