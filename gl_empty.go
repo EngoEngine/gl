@@ -475,3 +475,32 @@ func (c *Context) LoadIdentity() {}
 func (c *Context) PushMatrix() {}
 
 func (c *Context) PopMatrix() {}
+
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	return &RenderBuffer{0}
+}
+
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+}
+
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+}
+
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+}
+
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	return &FrameBuffer{0}
+}
+
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+}
+
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+}
+
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+}
+
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+}

@@ -1429,3 +1429,52 @@ func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride 
 func (c *Context) Viewport(x, y, width, height int) {
 	c.Call("viewport", x, y, width, height)
 }
+
+// CreateRenderBuffer creates a RenderBuffer object.
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	return &RenderBuffer{c.Call("createRenderbuffer")}
+}
+
+// DeleteRenderBuffer destroys the RenderBufffer object.
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+	c.Call("deleteRenderbuffer", rb.Value)
+}
+
+// BindRenderBuffer binds a named renderbuffer object.
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+	c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
+}
+
+// RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+	c.Call("renderbufferStorage", c.RENDERBUFFER, internalFormat, width, height)
+}
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	return &FrameBuffer{c.Call("createFramebuffer")}
+}
+
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	c.Call("deleteFramebuffer", fb.Value)
+}
+
+// BindFrameBuffer binds a framebuffer.
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+	if fb != nil {
+		c.Call("bindFramebuffer", c.FRAMEBUFFER, fb.Value)
+	} else {
+		c.Call("bindFramebuffer", c.FRAMEBUFFER, 0)
+	}
+}
+
+// FrameBufferTexture2D attaches a texture to a FrameBuffer
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+	c.Call("framebufferTexture2D", target, attachment, texTarget, t.Value, level)
+}
+
+// FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+	c.Call("framebufferRenderbuffer", target, attachment, c.RENDERBUFFER, rb.Value)
+}

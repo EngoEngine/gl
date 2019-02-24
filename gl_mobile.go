@@ -1326,3 +1326,52 @@ func (c *Context) VertexAttribPointer(index, size, typ int, normal bool, stride 
 func (c *Context) Viewport(x, y, width, height int) {
 	c.ctx.Viewport(x, y, width, height)
 }
+
+// CreateRenderBuffer creates a RenderBuffer object.
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	return &RenderBuffer{c.ctx.CreateRenderbuffer()}
+}
+
+// DeleteRenderBuffer destroys the RenderBufffer object.
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+	c.ctx.DeleteRenderbuffer(rb.Renderbuffer)
+}
+
+// BindRenderBuffer binds a named renderbuffer object.
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+	c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
+}
+
+// RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+	c.ctx.RenderbufferStorage(gl.RENDERBUFFER, gl.Enum(internalFormat), width, height)
+}
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	return &FrameBuffer{c.ctx.CreateFramebuffer()}
+}
+
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	c.ctx.DeleteFramebuffer(fb.Framebuffer)
+}
+
+// BindFrameBuffer binds a framebuffer.
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+	if fb != nil {
+		c.ctx.BindFramebuffer(gl.FRAMEBUFFER, fb.Framebuffer)
+	} else {
+		c.ctx.BindFramebuffer(gl.FRAMEBUFFER, gl.Framebuffer{0})
+	}
+}
+
+// FrameBufferTexture2D attaches a texture to a FrameBuffer
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+	c.ctx.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), t.Texture, level)
+}
+
+// FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+	c.ctx.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(c.RENDERBUFFER), rb.Renderbuffer)
+}

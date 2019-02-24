@@ -956,3 +956,56 @@ func (c *Context) PushMatrix() {
 func (c *Context) PopMatrix() {
 	gl.PopMatrix()
 }
+
+// CreateRenderBuffer creates a RenderBuffer object.
+func (c *Context) CreateRenderBuffer() *RenderBuffer {
+	var id uint32
+	gl.GenRenderbuffers(1, &id)
+	return &RenderBuffer{id}
+}
+
+// DeleteRenderBuffer destroys the RenderBufffer object.
+func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
+	gl.DeleteRenderbuffers(1, &rb.uint32)
+}
+
+// BindRenderBuffer binds a named renderbuffer object.
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+	gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+}
+
+// RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+	gl.RenderbufferStorage(gl.RENDERBUFFER, internalFormat, int32(width), int32(height))
+}
+
+// CreateFrameBuffer creates a FrameBuffer object.
+func (c *Context) CreateFrameBuffer() *FrameBuffer {
+	var id uint32
+	gl.GenFramebuffers(1, &id)
+	return &FrameBuffer{id}
+}
+
+// DeleteFrameBuffer deletes the given framebuffer object.
+func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
+	gl.DeleteFramebuffers(1, &fb.uint32)
+}
+
+// BindFrameBuffer binds a framebuffer.
+func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
+	if fb != nil {
+		gl.BindFramebuffer(gl.FRAMEBUFFER, fb.uint32)
+	} else {
+		gl.BindFramebuffer(gl.FRAMEBUFFER, 0)
+	}
+}
+
+// FrameBufferTexture2D attaches a texture to a FrameBuffer
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))
+}
+
+// FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
+func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+	gl.FramebufferRenderbuffer(target, attachment, gl.RENDERBUFFER, rb.uint32)
+}
