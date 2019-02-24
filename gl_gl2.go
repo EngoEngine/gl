@@ -968,3 +968,8 @@ func (c *Context) CreateRenderBuffer() *RenderBuffer {
 func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 	gl.DeleteRenderbuffers(1, &rb.uint32)
 }
+
+// BindRenderBuffer binds a named renderbuffer object.
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+	gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+}

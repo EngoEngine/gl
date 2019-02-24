@@ -1336,3 +1336,8 @@ func (c *Context) CreateRenderBuffer() *RenderBuffer {
 func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 	c.ctx.DeleteRenderbuffer(rb.Renderbuffer)
 }
+
+// BindRenderBuffer binds a named renderbuffer object.
+func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
+	c.ctx.BindRenderbuffer(c.RENDERBUFFER, rb.Renderbuffer)
+}
