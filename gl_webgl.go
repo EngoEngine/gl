@@ -1446,8 +1446,8 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
-	c.Call("renderbufferStorage", rb.value, internalFormat, width, height)
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+	c.Call("renderbufferStorage", c.RENDERBUFFER, internalFormat, width, height)
 }
 
 // CreateFrameBuffer creates a FrameBuffer object.

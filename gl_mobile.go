@@ -1339,12 +1339,12 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	c.ctx.BindRenderbuffer(c.RENDERBUFFER, rb.Renderbuffer)
+	c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
-	c.ctx.RenderbufferStorage(rb.Renderbuffer, internalFormat, width, height)
+func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+	c.ctx.RenderbufferStorage(gl.RENDERBUFFER, gl.Enum(internalFormat), width, height)
 }
 
 // CreateFrameBuffer creates a FrameBuffer object.
@@ -1354,7 +1354,7 @@ func (c *Context) CreateFrameBuffer() *FrameBuffer {
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
 func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
-	c.ctx.FramebufferTexture2D(target, attachment, texTarget, t.Texture, level)
+	c.ctx.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), t.Texture, level)
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
