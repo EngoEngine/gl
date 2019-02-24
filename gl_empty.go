@@ -485,3 +485,6 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
+
+func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
+}

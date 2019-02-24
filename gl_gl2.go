@@ -973,3 +973,8 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 	gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
 }
+
+// RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
+func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
+	gl.RenderbufferStorage(rb.uint32, internalFormat, int32(width), int32(height))
+}

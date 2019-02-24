@@ -1444,3 +1444,8 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 	c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
 }
+
+// RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
+func (c *Context) RenderBufferStorage(rb *RenderBuffer, internalFormat uint32, width, height int) {
+	c.Call("renderbufferStorage", rb.value, internalFormat, width, height)
+}
