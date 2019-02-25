@@ -774,24 +774,6 @@ func (c *Context) BindBuffer(target int, buffer *Buffer) {
 	c.Call("bindBuffer", target, buffer.Value)
 }
 
-// Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
-func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
-	if framebuffer == nil {
-		c.Call("bindFramebuffer", target, nil)
-		return
-	}
-	c.Call("bindFramebuffer", target, framebuffer.Value)
-}
-
-// Binds a WebGLRenderbuffer object to be used for rendering.
-func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
-	if renderbuffer == nil {
-		c.Call("bindRenderBuffer", target, nil)
-		return
-	}
-	c.Call("bindRenderbuffer", target, renderbuffer)
-}
-
 // Binds a named texture object to a target.
 func (c *Context) BindTexture(target int, texture *Texture) {
 	if texture == nil {
@@ -1442,7 +1424,11 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
+	if rb != nil {
+		c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
+	} else {
+		c.Call("bindRenderbuffer", c.RENDERBUFFER, nil)
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
@@ -1465,7 +1451,7 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 	if fb != nil {
 		c.Call("bindFramebuffer", c.FRAMEBUFFER, fb.Value)
 	} else {
-		c.Call("bindFramebuffer", c.FRAMEBUFFER, 0)
+		c.Call("bindFramebuffer", c.FRAMEBUFFER, nil)
 	}
 }
 

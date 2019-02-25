@@ -971,7 +971,11 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+	if rb != nil {
+		gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+	} else {
+		gl.BindRenderbuffer(gl.RENDERBUFFER, 0)
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.

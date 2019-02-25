@@ -689,24 +689,6 @@ func (c *Context) BindBuffer(target int, buffer *Buffer) {
 	c.ctx.BindBuffer(gl.Enum(target), buffer.Buffer)
 }
 
-// Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
-func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
-	if framebuffer == nil {
-		c.ctx.BindFramebuffer(gl.Enum(target), gl.Framebuffer{0})
-		return
-	}
-	c.ctx.BindFramebuffer(gl.Enum(target), framebuffer.Framebuffer)
-}
-
-// Binds a WebGLRenderbuffer object to be used for rendering.
-func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
-	if renderbuffer == nil {
-		c.ctx.BindRenderbuffer(gl.Enum(target), gl.Renderbuffer{0})
-		return
-	}
-	c.ctx.BindRenderbuffer(gl.Enum(target), renderbuffer.Renderbuffer)
-}
-
 // Binds a named texture object to a target.
 func (c *Context) BindTexture(target int, texture *Texture) {
 	if texture == nil {
@@ -1339,7 +1321,11 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
+	if rb != nil {
+		c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
+	} else {
+		c.ctx.BindRenderbuffer(gl.RENDERBUFFER, gl.Renderbuffer{0})
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
