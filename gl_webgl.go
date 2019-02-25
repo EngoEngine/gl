@@ -235,6 +235,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -567,6 +568,7 @@ func (c *Context) InitialContextValues() {
 	c.RGB565 = webCtx.Get("RGB565").Int()
 	c.RGBA = webCtx.Get("RGBA").Int()
 	c.RGBA4 = webCtx.Get("RGBA4").Int()
+	c.RGBA8 = webCtx.Get("RGBA8").Int()
 	c.SAMPLER_2D = webCtx.Get("SAMPLER_2D").Int()
 	c.SAMPLER_CUBE = webCtx.Get("SAMPLER_CUBE").Int()
 	c.SAMPLES = webCtx.Get("SAMPLES").Int()

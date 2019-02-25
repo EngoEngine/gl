@@ -203,6 +203,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -494,6 +495,7 @@ func NewContext(DrawContext interface{}) *Context {
 		RGB565:                                       gl.RGB565,
 		RGBA:                                         gl.RGBA,
 		RGBA4:                                        gl.RGBA4,
+		RGBA8:                                        gl.RGBA8,
 		SAMPLER_2D:                                   gl.SAMPLER_2D,
 		SAMPLER_CUBE:                                 gl.SAMPLER_CUBE,
 		SAMPLES:                                      gl.SAMPLES,
