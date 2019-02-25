@@ -1434,7 +1434,7 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
 	c.Call("renderbufferStorage", c.RENDERBUFFER, internalFormat, width, height)
 }
 
@@ -1458,11 +1458,11 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
 	c.Call("framebufferTexture2D", target, attachment, texTarget, t.Value, level)
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.Call("framebufferRenderbuffer", target, attachment, c.RENDERBUFFER, rb.Value)
 }

@@ -487,7 +487,7 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
 
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
 }
 
 func (c *Context) CreateFrameBuffer() *FrameBuffer {
@@ -500,8 +500,8 @@ func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
 func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
 }
 
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 }

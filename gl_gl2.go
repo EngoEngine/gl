@@ -981,8 +981,8 @@ func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
-	gl.RenderbufferStorage(gl.RENDERBUFFER, internalFormat, int32(width), int32(height))
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
+	gl.RenderbufferStorage(gl.RENDERBUFFER, uint32(internalFormat), int32(width), int32(height))
 }
 
 // CreateFrameBuffer creates a FrameBuffer object.
@@ -1007,11 +1007,11 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
-	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
+	gl.FramebufferTexture2D(uint32(target), uint32(attachment), uint32(texTarget), t.uint32, int32(level))
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
-	gl.FramebufferRenderbuffer(target, attachment, gl.RENDERBUFFER, rb.uint32)
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
+	gl.FramebufferRenderbuffer(uint32(target), uint32(attachment), gl.RENDERBUFFER, rb.uint32)
 }
