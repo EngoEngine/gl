@@ -782,6 +782,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	gl.TexImage2D(uint32(target), int32(level), int32(internalFormat), int32(width), int32(height), int32(0), uint32(format), uint32(kind), gl.Ptr(pix))
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	gl.TexImage2D(uint32(target), int32(level), int32(internalFormat), int32(width), int32(height), int32(0), uint32(format), uint32(kind), nil)
+}
+
 func (c *Context) GetAttribLocation(program *Program, name string) int {
 	return int(gl.GetAttribLocation(program.uint32, gl.Str(name+"\x00")))
 }

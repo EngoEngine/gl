@@ -1300,6 +1300,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	}
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	c.Call("texImage2D", target, level, internalFormat, width, height, 0, format, kind, nil)
+}
+
 // Sets texture parameters for the current texture unit.
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	c.Call("texParameteri", target, pname, param)

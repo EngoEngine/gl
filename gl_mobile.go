@@ -1198,6 +1198,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	}
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	c.ctx.TexImage2D(gl.Enum(target), level, gl.Enum(internalFormat), width, height, gl.Enum(format), gl.Enum(kind), nil)
+}
+
 // Sets texture parameters for the current texture unit.
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	c.ctx.TexParameteri(gl.Enum(target), gl.Enum(pname), param)

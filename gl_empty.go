@@ -395,6 +395,8 @@ func (c *Context) TexParameteri(target int, pname int, param int) {}
 
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {}
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {}
+
 func (c *Context) GetAttribLocation(program *Program, name string) int {
 	return 0
 }
