@@ -1304,6 +1304,12 @@ func (c *Context) Viewport(x, y, width, height int) {
 	c.ctx.Viewport(x, y, width, height)
 }
 
+func (c *Context) GetViewport() [4]int32 {
+	var params [4]int32
+	c.ctx.GetIntegerv(params[:], c.VIEWPORT)
+	return params
+}
+
 // CreateRenderBuffer creates a RenderBuffer object.
 func (c *Context) CreateRenderBuffer() *RenderBuffer {
 	return &RenderBuffer{c.ctx.CreateRenderbuffer()}
