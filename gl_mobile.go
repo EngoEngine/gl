@@ -1356,3 +1356,14 @@ func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Tex
 func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.ctx.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(c.RENDERBUFFER), rb.Renderbuffer)
 }
+
+func (c *Context) GetViewport() [4]int32 {
+	var params [4]int32
+	var ret []int32
+	c.ctx.GetIntegerv(params[...], gl.Enum(c.VIEWPORT))
+	params[0] = ret[0]
+	params[1] = ret[1]
+	params[2] = ret[2]
+	params[3] = ret[3]
+	return params
+}

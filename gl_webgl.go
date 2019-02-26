@@ -1459,3 +1459,13 @@ func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Tex
 func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.Call("framebufferRenderbuffer", target, attachment, c.RENDERBUFFER, rb.Value)
 }
+
+func (c *Context) GetViewport() [4]int32 {
+	var params [4]int32
+	ret := c.Call("getParameter", c.VIEWPORT)
+	params[0] = int32(ret.Index(0).Int())
+	params[1] = int32(ret.Index(1).Int())
+	params[2] = int32(ret.Index(2).Int())
+	params[3] = int32(ret.Index(3).Int())
+	return params
+}
