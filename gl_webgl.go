@@ -1422,7 +1422,7 @@ func (c *Context) GetViewport() [4]int32 {
 	var params [4]int32
 	vp := c.Call("getParameter", c.VIEWPORT)
 	for i := 0; i < 4; i++ {
-		params[i] = vp.Index(i).Int()
+		params[i] = int32(vp.Index(i).Int())
 	}
 	return params
 }
