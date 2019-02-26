@@ -204,6 +204,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -502,6 +503,7 @@ func NewContext() *Context {
 		RGB565:                                       gl.RGB565,
 		RGBA:                                         gl.RGBA,
 		RGBA4:                                        gl.RGBA4,
+		RGBA8:                                        gl.RGBA8,
 		SAMPLER_2D:                                   gl.SAMPLER_2D,
 		SAMPLER_CUBE:                                 gl.SAMPLER_CUBE,
 		SAMPLES:                                      gl.SAMPLES,
@@ -780,6 +782,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	gl.TexImage2D(uint32(target), int32(level), int32(internalFormat), int32(width), int32(height), int32(0), uint32(format), uint32(kind), gl.Ptr(pix))
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	gl.TexImage2D(uint32(target), int32(level), int32(internalFormat), int32(width), int32(height), int32(0), uint32(format), uint32(kind), nil)
+}
+
 func (c *Context) GetAttribLocation(program *Program, name string) int {
 	return int(gl.GetAttribLocation(program.uint32, gl.Str(name+"\x00")))
 }
@@ -971,12 +977,16 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+	if rb != nil {
+		gl.BindRenderbuffer(gl.RENDERBUFFER, rb.uint32)
+	} else {
+		gl.BindRenderbuffer(gl.RENDERBUFFER, 0)
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
-	gl.RenderbufferStorage(gl.RENDERBUFFER, internalFormat, int32(width), int32(height))
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
+	gl.RenderbufferStorage(gl.RENDERBUFFER, uint32(internalFormat), int32(width), int32(height))
 }
 
 // CreateFrameBuffer creates a FrameBuffer object.
@@ -1001,11 +1011,11 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
-	gl.FramebufferTexture2D(target, attachment, texTarget, t.uint32, int32(level))
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
+	gl.FramebufferTexture2D(uint32(target), uint32(attachment), uint32(texTarget), t.uint32, int32(level))
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
-	gl.FramebufferRenderbuffer(target, attachment, gl.RENDERBUFFER, rb.uint32)
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
+	gl.FramebufferRenderbuffer(uint32(target), uint32(attachment), gl.RENDERBUFFER, rb.uint32)
 }

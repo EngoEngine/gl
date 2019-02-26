@@ -235,6 +235,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -567,6 +568,7 @@ func (c *Context) InitialContextValues() {
 	c.RGB565 = webCtx.Get("RGB565").Int()
 	c.RGBA = webCtx.Get("RGBA").Int()
 	c.RGBA4 = webCtx.Get("RGBA4").Int()
+	c.RGBA8 = webCtx.Get("RGBA4").Int() // use RGBA8 when available.
 	c.SAMPLER_2D = webCtx.Get("SAMPLER_2D").Int()
 	c.SAMPLER_CUBE = webCtx.Get("SAMPLER_CUBE").Int()
 	c.SAMPLES = webCtx.Get("SAMPLES").Int()
@@ -767,24 +769,6 @@ func (c *Context) BindBuffer(target int, buffer *Buffer) {
 		return
 	}
 	c.Call("bindBuffer", target, buffer.Value)
-}
-
-// Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
-func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
-	if framebuffer == nil {
-		c.Call("bindFramebuffer", target, nil)
-		return
-	}
-	c.Call("bindFramebuffer", target, framebuffer.Value)
-}
-
-// Binds a WebGLRenderbuffer object to be used for rendering.
-func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
-	if renderbuffer == nil {
-		c.Call("bindRenderBuffer", target, nil)
-		return
-	}
-	c.Call("bindRenderbuffer", target, renderbuffer)
 }
 
 // Binds a named texture object to a target.
@@ -1305,6 +1289,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	}
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	c.Call("texImage2D", target, level, internalFormat, width, height, 0, format, kind, nil)
+}
+
 // Sets texture parameters for the current texture unit.
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	c.Call("texParameteri", target, pname, param)
@@ -1431,11 +1419,15 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
+	if rb != nil {
+		c.Call("bindRenderbuffer", c.RENDERBUFFER, rb.Value)
+	} else {
+		c.Call("bindRenderbuffer", c.RENDERBUFFER, nil)
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
 	c.Call("renderbufferStorage", c.RENDERBUFFER, internalFormat, width, height)
 }
 
@@ -1454,16 +1446,16 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 	if fb != nil {
 		c.Call("bindFramebuffer", c.FRAMEBUFFER, fb.Value)
 	} else {
-		c.Call("bindFramebuffer", c.FRAMEBUFFER, 0)
+		c.Call("bindFramebuffer", c.FRAMEBUFFER, nil)
 	}
 }
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
 	c.Call("framebufferTexture2D", target, attachment, texTarget, t.Value, level)
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.Call("framebufferRenderbuffer", target, attachment, c.RENDERBUFFER, rb.Value)
 }

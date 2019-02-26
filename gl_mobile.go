@@ -203,6 +203,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -494,6 +495,7 @@ func NewContext(DrawContext interface{}) *Context {
 		RGB565:                                       gl.RGB565,
 		RGBA:                                         gl.RGBA,
 		RGBA4:                                        gl.RGBA4,
+		RGBA8:                                        gl.RGBA8,
 		SAMPLER_2D:                                   gl.SAMPLER_2D,
 		SAMPLER_CUBE:                                 gl.SAMPLER_CUBE,
 		SAMPLES:                                      gl.SAMPLES,
@@ -682,24 +684,6 @@ func (c *Context) BindBuffer(target int, buffer *Buffer) {
 		return
 	}
 	c.ctx.BindBuffer(gl.Enum(target), buffer.Buffer)
-}
-
-// Associates a WebGLFramebuffer object with the FRAMEBUFFER bind target.
-func (c *Context) BindFramebuffer(target int, framebuffer *FrameBuffer) {
-	if framebuffer == nil {
-		c.ctx.BindFramebuffer(gl.Enum(target), gl.Framebuffer{0})
-		return
-	}
-	c.ctx.BindFramebuffer(gl.Enum(target), framebuffer.Framebuffer)
-}
-
-// Binds a WebGLRenderbuffer object to be used for rendering.
-func (c *Context) BindRenderbuffer(target int, renderbuffer *RenderBuffer) {
-	if renderbuffer == nil {
-		c.ctx.BindRenderbuffer(gl.Enum(target), gl.Renderbuffer{0})
-		return
-	}
-	c.ctx.BindRenderbuffer(gl.Enum(target), renderbuffer.Renderbuffer)
 }
 
 // Binds a named texture object to a target.
@@ -1203,6 +1187,10 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	}
 }
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
+	c.ctx.TexImage2D(gl.Enum(target), level, gl.Enum(internalFormat), width, height, gl.Enum(format), gl.Enum(kind), nil)
+}
+
 // Sets texture parameters for the current texture unit.
 func (c *Context) TexParameteri(target int, pname int, param int) {
 	c.ctx.TexParameteri(gl.Enum(target), gl.Enum(pname), param)
@@ -1328,11 +1316,15 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 
 // BindRenderBuffer binds a named renderbuffer object.
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
-	c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
+	if rb != nil {
+		c.ctx.BindRenderbuffer(gl.RENDERBUFFER, rb.Renderbuffer)
+	} else {
+		c.ctx.BindRenderbuffer(gl.RENDERBUFFER, gl.Renderbuffer{0})
+	}
 }
 
 // RenderBufferStorage establishes the data storage, format, and dimensions of a renderbuffer object's image.
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
 	c.ctx.RenderbufferStorage(gl.RENDERBUFFER, gl.Enum(internalFormat), width, height)
 }
 
@@ -1356,11 +1348,11 @@ func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
 // FrameBufferTexture2D attaches a texture to a FrameBuffer
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
 	c.ctx.FramebufferTexture2D(gl.Enum(target), gl.Enum(attachment), gl.Enum(texTarget), t.Texture, level)
 }
 
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.ctx.FramebufferRenderbuffer(gl.Enum(target), gl.Enum(attachment), gl.Enum(c.RENDERBUFFER), rb.Renderbuffer)
 }

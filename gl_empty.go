@@ -199,6 +199,7 @@ type Context struct {
 	RGB565                                       int
 	RGBA                                         int
 	RGBA4                                        int
+	RGBA8                                        int
 	SAMPLER_2D                                   int
 	SAMPLER_CUBE                                 int
 	SAMPLES                                      int
@@ -394,6 +395,8 @@ func (c *Context) TexParameteri(target int, pname int, param int) {}
 
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {}
 
+func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {}
+
 func (c *Context) GetAttribLocation(program *Program, name string) int {
 	return 0
 }
@@ -486,7 +489,7 @@ func (c *Context) DeleteRenderBuffer(rb *RenderBuffer) {
 func (c *Context) BindRenderBuffer(rb *RenderBuffer) {
 }
 
-func (c *Context) RenderBufferStorage(internalFormat uint32, width, height int) {
+func (c *Context) RenderBufferStorage(internalFormat int, width, height int) {
 }
 
 func (c *Context) CreateFrameBuffer() *FrameBuffer {
@@ -499,8 +502,8 @@ func (c *Context) DeleteFrameBuffer(fb *FrameBuffer) {
 func (c *Context) BindFrameBuffer(fb *FrameBuffer) {
 }
 
-func (c *Context) FrameBufferTexture2D(target, attachment, texTarget uint32, t *Texture, level int) {
+func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Texture, level int) {
 }
 
-func (c *Context) FrameBufferRenderBuffer(target, attachment uint32, rb *RenderBuffer) {
+func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 }
