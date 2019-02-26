@@ -568,7 +568,7 @@ func (c *Context) InitialContextValues() {
 	c.RGB565 = webCtx.Get("RGB565").Int()
 	c.RGBA = webCtx.Get("RGBA").Int()
 	c.RGBA4 = webCtx.Get("RGBA4").Int()
-	c.RGBA8 = webCtx.Get("RGBA8").Int()
+	c.RGBA8 = webCtx.Get("RGBA4").Int() // use RGBA8 when available.
 	c.SAMPLER_2D = webCtx.Get("SAMPLER_2D").Int()
 	c.SAMPLER_CUBE = webCtx.Get("SAMPLER_CUBE").Int()
 	c.SAMPLES = webCtx.Get("SAMPLES").Int()
