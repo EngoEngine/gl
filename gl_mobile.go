@@ -1188,7 +1188,7 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 }
 
 func (c *Context) TexImage2DEmpty(target, level, internalFormat, format, kind, width, height int) {
-	c.ctx.TexImage2D(gl.Enum(target), level, gl.Enum(internalFormat), width, height, gl.Enum(format), gl.Enum(kind), nil)
+	c.ctx.TexImage2D(gl.Enum(target), level, internalFormat, width, height, gl.Enum(format), gl.Enum(kind), nil)
 }
 
 // Sets texture parameters for the current texture unit.
@@ -1306,7 +1306,7 @@ func (c *Context) Viewport(x, y, width, height int) {
 
 func (c *Context) GetViewport() [4]int32 {
 	var params [4]int32
-	c.ctx.GetIntegerv(params[:], c.VIEWPORT)
+	c.ctx.GetIntegerv(params[:], gl.Enum(c.VIEWPORT))
 	return params
 }
 
