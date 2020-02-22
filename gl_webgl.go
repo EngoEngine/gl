@@ -11,8 +11,7 @@ import (
 	"errors"
 	"image"
 	"log"
-
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
 )
 
 type Texture struct{ js.Value }
@@ -789,21 +788,21 @@ func (c *Context) ActiveTexture(target int) {
 // If no array is provided, the contents of the buffer is initialized to 0.
 func (c *Context) BufferData(target int, data interface{}, usage int) {
 	buf, ok := data.([]uint8)
-	d := js.TypedArrayOf([]uint8{})
+	d := js.TypeOf([]uint8{})
 	if ok {
-		d = js.TypedArrayOf(buf)
+		d = js.TypeOf(buf)
 	}
 	buf2, ok := data.([]uint16)
 	if ok {
-		d = js.TypedArrayOf(buf2)
+		d = js.TypeOf(buf2)
 	}
 	buf3, ok := data.([]uint32)
 	if ok {
-		d = js.TypedArrayOf(buf3)
+		d = js.TypeOf(buf3)
 	}
 	buff32, ok := data.([]float32)
 	if ok {
-		d = js.TypedArrayOf(buff32)
+		d = js.TypeOf(buff32)
 	}
 	c.Call("bufferData", target, d, usage)
 	d.Release()
@@ -812,21 +811,21 @@ func (c *Context) BufferData(target int, data interface{}, usage int) {
 // Used to modify or update some or all of a data store for a bound buffer object.
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 	buf, ok := data.([]uint8)
-	d := js.TypedArrayOf([]uint8{})
+	d := js.TypeOf([]uint8{})
 	if ok {
-		d = js.TypedArrayOf(buf)
+		d = js.TypeOf(buf)
 	}
 	buf2, ok := data.([]uint16)
 	if ok {
-		d = js.TypedArrayOf(buf2)
+		d = js.TypeOf(buf2)
 	}
 	buf3, ok := data.([]uint32)
 	if ok {
-		d = js.TypedArrayOf(buf3)
+		d = js.TypeOf(buf3)
 	}
 	buff32, ok := data.([]float32)
 	if ok {
-		d = js.TypedArrayOf(buff32)
+		d = js.TypeOf(buff32)
 	}
 	c.Call("bufferSubData", target, offset, d)
 	d.Release()
@@ -1277,11 +1276,11 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
 	switch img := data.(type) {
 	case *image.NRGBA:
-		d := js.TypedArrayOf(img.Pix)
+		d := js.TypeOf(img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
 		d.Release()
 	case *image.RGBA:
-		d := js.TypedArrayOf(img.Pix)
+		d := js.TypeOf(img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
 		d.Release()
 	default:
@@ -1355,7 +1354,7 @@ func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
 // Sets values for a 2x2 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.TypedArrayOf(value)
+	d := js.TypeOf(value)
 	c.Call("uniformMatrix2fv", location.Value, transpose, d)
 	d.Release()
 }
@@ -1363,14 +1362,14 @@ func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, va
 // Sets values for a 3x3 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix3fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.TypedArrayOf(value)
+	d := js.TypeOf(value)
 	c.Call("uniformMatrix3fv", location.Value, transpose, d)
 }
 
 // Sets values for a 4x4 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.TypedArrayOf(value)
+	d := js.TypeOf(value)
 	c.Call("uniformMatrix4fv", location.Value, transpose, d)
 }
 
