@@ -805,7 +805,6 @@ func (c *Context) BufferData(target int, data interface{}, usage int) {
 		d = js.ValueOf(buff32)
 	}
 	c.Call("bufferData", target, d, usage)
-	d.Release()
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
@@ -828,7 +827,6 @@ func (c *Context) BufferSubData(target int, offset int, data interface{}) {
 		d = js.ValueOf(buff32)
 	}
 	c.Call("bufferSubData", target, offset, d)
-	d.Release()
 }
 
 // Returns whether the currently bound WebGLFramebuffer is complete.
@@ -1278,11 +1276,9 @@ func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, da
 	case *image.NRGBA:
 		d := js.ValueOf(img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
-		d.Release()
 	case *image.RGBA:
 		d := js.ValueOf(img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
-		d.Release()
 	default:
 		c.Call("texImage2D", target, level, internalFormat, format, kind, data)
 	}
@@ -1356,7 +1352,6 @@ func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
 	d := js.ValueOf(value)
 	c.Call("uniformMatrix2fv", location.Value, transpose, d)
-	d.Release()
 }
 
 // Sets values for a 3x3 floating point vector matrix into a
