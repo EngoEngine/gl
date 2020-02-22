@@ -1,4 +1,4 @@
-module github.com/engoengine/gl
+module github.com/EngoEngine/gl
 
 go 1.13
 
