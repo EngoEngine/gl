@@ -11,7 +11,9 @@ import (
 	"errors"
 	"image"
 	"log"
+	"reflect"
 	"syscall/js"
+	"unsafe"
 )
 
 type Texture struct{ js.Value }
@@ -787,46 +789,78 @@ func (c *Context) ActiveTexture(target int) {
 // Creates a buffer in memory and initializes it with array data.
 // If no array is provided, the contents of the buffer is initialized to 0.
 func (c *Context) BufferData(target int, data interface{}, usage int) {
-	buf, ok := data.([]uint8)
-	d := js.ValueOf([]uint8{})
-	if ok {
-		d = js.ValueOf(buf)
+	var val js.Value
+	switch d := data.(type) {
+	case []uint8:
+		val = js.Global().Get("Uint8Array").New(len(d))
+		js.CopyBytesToJS(val, d)
+	case []uint16:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 2
+		h.Cap *= 2
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 2)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Uint16Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
+	case []uint32:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 4
+		h.Cap *= 4
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Uint32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
+	case []float32:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 4
+		h.Cap *= 4
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Float32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
 	}
-	buf2, ok := data.([]uint16)
-	if ok {
-		d = js.ValueOf(buf2)
-	}
-	buf3, ok := data.([]uint32)
-	if ok {
-		d = js.ValueOf(buf3)
-	}
-	buff32, ok := data.([]float32)
-	if ok {
-		d = js.ValueOf(buff32)
-	}
-	c.Call("bufferData", target, d, usage)
+	c.Call("bufferData", target, val, usage)
 }
 
 // Used to modify or update some or all of a data store for a bound buffer object.
 func (c *Context) BufferSubData(target int, offset int, data interface{}) {
-	buf, ok := data.([]uint8)
-	d := js.ValueOf([]uint8{})
-	if ok {
-		d = js.ValueOf(buf)
+	var val js.Value
+	switch d := data.(type) {
+	case []uint8:
+		val = js.Global().Get("Uint8Array").New(len(d))
+		js.CopyBytesToJS(val, d)
+	case []uint16:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 2
+		h.Cap *= 2
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 2)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Uint16Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
+	case []uint32:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 4
+		h.Cap *= 4
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Uint32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
+	case []float32:
+		l := len(d)
+		h := (*reflect.SliceHeader)(unsafe.Pointer(&d))
+		h.Len *= 4
+		h.Cap *= 4
+		bs := *(*[]byte)(unsafe.Pointer(h))
+		uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+		js.CopyBytesToJS(uint8arr, bs)
+		val = js.Global().Get("Float32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
 	}
-	buf2, ok := data.([]uint16)
-	if ok {
-		d = js.ValueOf(buf2)
-	}
-	buf3, ok := data.([]uint32)
-	if ok {
-		d = js.ValueOf(buf3)
-	}
-	buff32, ok := data.([]float32)
-	if ok {
-		d = js.ValueOf(buff32)
-	}
-	c.Call("bufferSubData", target, offset, d)
+	c.Call("bufferSubData", target, offset, val)
 }
 
 // Returns whether the currently bound WebGLFramebuffer is complete.
@@ -1274,10 +1308,12 @@ func (c *Context) ShaderSource(shader *Shader, source string) {
 func (c *Context) TexImage2D(target, level, internalFormat, format, kind int, data interface{}) {
 	switch img := data.(type) {
 	case *image.NRGBA:
-		d := js.ValueOf(img.Pix)
+		d := js.Global().Get("Uint8Array").New(len(img.Pix))
+		js.CopyBytesToJS(d, img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
 	case *image.RGBA:
-		d := js.ValueOf(img.Pix)
+		d := js.Global().Get("Uint8Array").New(len(img.Pix))
+		js.CopyBytesToJS(d, img.Pix)
 		c.Call("texImage2D", target, level, internalFormat, img.Bounds().Dx(), img.Bounds().Dy(), 0, format, kind, d)
 	default:
 		c.Call("texImage2D", target, level, internalFormat, format, kind, data)
@@ -1350,21 +1386,42 @@ func (c *Context) Uniform4i(location *UniformLocation, x, y, z, w int) {
 // Sets values for a 2x2 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix2fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.ValueOf(value)
+	l := len(value)
+	h := (*reflect.SliceHeader)(unsafe.Pointer(&value))
+	h.Len *= 4
+	h.Cap *= 4
+	bs := *(*[]byte)(unsafe.Pointer(h))
+	uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+	js.CopyBytesToJS(uint8arr, bs)
+	d := js.Global().Get("Float32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
 	c.Call("uniformMatrix2fv", location.Value, transpose, d)
 }
 
 // Sets values for a 3x3 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix3fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.ValueOf(value)
+	l := len(value)
+	h := (*reflect.SliceHeader)(unsafe.Pointer(&value))
+	h.Len *= 4
+	h.Cap *= 4
+	bs := *(*[]byte)(unsafe.Pointer(h))
+	uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+	js.CopyBytesToJS(uint8arr, bs)
+	d := js.Global().Get("Float32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
 	c.Call("uniformMatrix3fv", location.Value, transpose, d)
 }
 
 // Sets values for a 4x4 floating point vector matrix into a
 // uniform location as a matrix or a matrix array.
 func (c *Context) UniformMatrix4fv(location *UniformLocation, transpose bool, value []float32) {
-	d := js.ValueOf(value)
+	l := len(value)
+	h := (*reflect.SliceHeader)(unsafe.Pointer(&value))
+	h.Len *= 4
+	h.Cap *= 4
+	bs := *(*[]byte)(unsafe.Pointer(h))
+	uint8arr := js.Global().Get("Uint8Array").New(l * 4)
+	js.CopyBytesToJS(uint8arr, bs)
+	d := js.Global().Get("Float32Array").New(uint8arr.Get("buffer"), uint8arr.Get("byteoffset"), l)
 	c.Call("uniformMatrix4fv", location.Value, transpose, d)
 }
 
