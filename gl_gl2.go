@@ -141,6 +141,7 @@ type Context struct {
 	LINES                                        int
 	LINE_LOOP                                    int
 	LINE_STRIP                                   int
+	LINE_STIPPLE                                 int
 	LINE_WIDTH                                   int
 	LINK_STATUS                                  int
 	LOW_FLOAT                                    int
@@ -440,6 +441,7 @@ func NewContext() *Context {
 		LINES:                                        gl.LINES,
 		LINE_LOOP:                                    gl.LINE_LOOP,
 		LINE_STRIP:                                   gl.LINE_STRIP,
+		LINE_STIPPLE:                                 gl.LINE_STIPPLE,
 		LINE_WIDTH:                                   gl.LINE_WIDTH,
 		LINK_STATUS:                                  gl.LINK_STATUS,
 		LOW_FLOAT:                                    gl.LOW_FLOAT,
@@ -726,6 +728,10 @@ func (c *Context) GetProgramInfoLog(program *Program) string {
 
 func (c *Context) AttachShader(program *Program, shader *Shader) {
 	gl.AttachShader(program.uint32, shader.uint32)
+}
+
+func (c *Context) LineStipple(factor int32, pattern uint16) {
+	gl.LineStipple(factor, pattern)
 }
 
 func (c *Context) LineWidth(width float32) {
