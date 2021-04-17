@@ -136,6 +136,7 @@ type Context struct {
 	LINES                                        int
 	LINE_LOOP                                    int
 	LINE_STRIP                                   int
+	LINE_STIPPLE                                 int
 	LINE_WIDTH                                   int
 	LINK_STATUS                                  int
 	LOW_FLOAT                                    int
@@ -378,6 +379,8 @@ func (c *Context) GetProgramInfoLog(program *Program) string {
 }
 
 func (c *Context) AttachShader(program *Program, shader *Shader) {}
+
+func (c *Context) LineStipple(factor int32, pattern uint16) {}
 
 func (c *Context) LineWidth(width float32) {}
 
