@@ -730,6 +730,10 @@ func (c *Context) AttachShader(program *Program, shader *Shader) {
 	gl.AttachShader(program.uint32, shader.uint32)
 }
 
+// LineStipple is not supported on mobile and webgl platforms. Emulation using small
+// rectangles is easiest method.
+// See: https://stackoverflow.com/questions/6017176/gllinestipple-deprecated-in-opengl-3-1
+// for implementation suggestions.
 func (c *Context) LineStipple(factor int32, pattern uint16) {
 	gl.LineStipple(factor, pattern)
 }

@@ -185,6 +185,7 @@ type Context struct {
 	LINES                                        int
 	LINE_LOOP                                    int
 	LINE_STRIP                                   int
+	LINE_STIPPLE                                 int
 	LINE_WIDTH                                   int
 	LINK_STATUS                                  int
 	LOW_FLOAT                                    int
@@ -1530,4 +1531,12 @@ func (c *Context) FrameBufferTexture2D(target, attachment, texTarget int, t *Tex
 // FrameBufferRenderBuffer attaches a RenderBuffer object to a FrameBuffer object.
 func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuffer) {
 	c.Call("framebufferRenderbuffer", target, attachment, c.RENDERBUFFER, rb.Value)
+}
+
+// LineStipple is not supported on webgl platforms. Emulation using small
+// rectangles is easiest method.
+// See: https://stackoverflow.com/questions/6017176/gllinestipple-deprecated-in-opengl-3-1
+// for implementation suggestions.
+func (c *Context) LineStipple(factor int32, pattern uint16) {
+	log.Error("[WARNING!!!] LineStipple is not supported on mobile platoforms!")
 }
