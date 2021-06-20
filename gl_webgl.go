@@ -1538,5 +1538,5 @@ func (c *Context) FrameBufferRenderBuffer(target, attachment int, rb *RenderBuff
 // See: https://stackoverflow.com/questions/6017176/gllinestipple-deprecated-in-opengl-3-1
 // for implementation suggestions.
 func (c *Context) LineStipple(factor int32, pattern uint16) {
-	log.Error("[WARNING!!!] LineStipple is not supported on mobile platoforms!")
+	log.Println("[WARNING!!!] LineStipple is not supported on mobile platoforms!")
 }
