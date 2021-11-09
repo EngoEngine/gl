@@ -1,5 +1,6 @@
-//+build android darwin,arm darwin,arm64 ios
-//+build !nogl
+//go:build (android || (darwin && arm) || (darwin && arm64) || ios) && !nogl
+// +build android darwin,arm darwin,arm64 ios
+// +build !nogl
 
 package gl
 
@@ -140,7 +141,7 @@ type Context struct {
 	LINES                                        int
 	LINE_LOOP                                    int
 	LINE_STRIP                                   int
-	LINE_STIPPLE int
+	LINE_STIPPLE                                 int
 	LINE_WIDTH                                   int
 	LINK_STATUS                                  int
 	LOW_FLOAT                                    int
@@ -434,7 +435,7 @@ func NewContext(DrawContext interface{}) *Context {
 		LINES:                                        gl.LINES,
 		LINE_LOOP:                                    gl.LINE_LOOP,
 		LINE_STRIP:                                   gl.LINE_STRIP,
-		LINE_STIPPLE: gl.line
+		LINE_STIPPLE:                                 gl.LINE_STIPPLE,
 		LINE_WIDTH:                                   gl.LINE_WIDTH,
 		LINK_STATUS:                                  gl.LINK_STATUS,
 		LOW_FLOAT:                                    gl.LOW_FLOAT,
