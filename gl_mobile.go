@@ -1,4 +1,4 @@
-//+build android darwin,arm darwin,arm64 ios
+//+build android ios
 //+build !nogl
 
 package gl
