@@ -2,8 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build darwin,!arm,!arm64 linux windows
-// +build !ios,!android,!js,!nogl
+//go:build (darwin || linux || windows) && !ios && !android && !js && !nogl
+// +build darwin linux windows
+// +build !ios
+// +build !android
+// +build !js
+// +build !nogl
 
 package gl
 
