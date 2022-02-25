@@ -1,4 +1,4 @@
-//+build android ios,amd64 ios,arm64 ios
+//+build android ios
 //+build !nogl
 
 package gl
