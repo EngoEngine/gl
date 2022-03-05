@@ -4,6 +4,7 @@
 // of whatever's supposed to be returned, except returns true for booleans in case
 // success checks are used.
 
+//go:build nogl
 // +build nogl
 
 package gl
@@ -449,6 +450,8 @@ func (c *Context) ValidateProgram(program *Program) {}
 func (c *Context) Uniform1f(location *UniformLocation, x float32) {}
 
 func (c *Context) Uniform1i(location *UniformLocation, x int) {}
+
+func (c *Context) Uniform1iTexture(location *UniformLocation, tex *Texture) {}
 
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {}
 

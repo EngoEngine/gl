@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build js
-// +build !nogl
+//go:build js && !nogl
+// +build js,!nogl
 
 package gl
 
@@ -1355,6 +1355,11 @@ func (c *Context) Uniform1f(location *UniformLocation, x float32) {
 // Assigns a integer value to a uniform variable for the current program object.
 func (c *Context) Uniform1i(location *UniformLocation, x int) {
 	c.Call("uniform1i", location.Value, x)
+}
+
+// Assigns a texture to a uniform variable for the current program object.
+func (c *Context) Uniform1iTexture(location *UniformLocation, tex *Texture) {
+	c.Call("uniform1i", location.Value, tex.Value)
 }
 
 // Assigns 2 floating point values to a uniform variable for the current program object.

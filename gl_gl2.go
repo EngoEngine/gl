@@ -910,6 +910,11 @@ func (c *Context) Uniform1i(location *UniformLocation, x int) {
 	gl.Uniform1i(location.int32, int32(x))
 }
 
+// Assigns a texture to a uniform variable for the current program object.
+func (c *Context) Uniform1iTexture(location *UniformLocation, tex *Texture) {
+	gl.Uniform1i(location.int32, int32(tex.uint32))
+}
+
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 	gl.Uniform2f(location.int32, x, y)
 }
