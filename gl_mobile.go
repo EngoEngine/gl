@@ -1215,6 +1215,11 @@ func (c *Context) Uniform1i(location *UniformLocation, x int) {
 	c.ctx.Uniform1i(location.Uniform, x)
 }
 
+// Assigns a texture to a uniform variable for the current program object.
+func (c *Context) Uniform1iTexture(location *UniformLocation, tex *Texture) {
+	c.ctx.Uniform1i(location.Uniform, int(tex.Texture.Value))
+}
+
 // Assigns 2 floating point values to a uniform variable for the current program object.
 func (c *Context) Uniform2f(location *UniformLocation, x, y float32) {
 	c.ctx.Uniform2f(location.Uniform, x, y)
